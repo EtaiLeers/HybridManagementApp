@@ -25,8 +25,11 @@ class Dashboard:
 
         #TODO: Continue from here:
 
+        print(filterdDf)
+        #Check
+
         fig, ax = plt.subplots()
-        plt.pie(filterdDf[('Sum','')])
+        plt.pie(filterdDf[('Sum', '')])
 
         plt.savefig('test.png')
         filterdDf.to_excel('filtered_df.xlsx')
