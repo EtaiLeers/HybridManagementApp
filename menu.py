@@ -10,3 +10,5 @@ class Menu:
         root.resizable(False, False)
 
         root.mainloop()
+
+        #Trying to see if it has been uploaded
