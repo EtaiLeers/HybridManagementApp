@@ -1,10 +1,12 @@
 from tkinter import *
 from PIL import Image, ImageTk
-from login import Login, Register
+# from login import Login, Register
 from inputScreen import Input
 import datetime as dt
 import time
 import pandas as pd
+
+#TODO: Add Excel file with users credentials
 
 
 def create_img(filename):
