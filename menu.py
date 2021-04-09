@@ -25,7 +25,7 @@ def display_time():
 display_time()
 
 clock_label.configure(text=now)
-clock_label.place(x=1135, y=40)
+clock_label.place(x=1140, y=40)
 clock_label.after(20, time)
 
 root.mainloop()
