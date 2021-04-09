@@ -25,7 +25,7 @@ class Dashboard:
 
         #TODO: Continue from here:
 
-        print(filterdDf)
+        #print(filterdDf)
         #Check
 
         fig, ax = plt.subplots()

@@ -1,5 +1,22 @@
 import pandas as pd
 
+# Normalize algorithm:
+
+def normalize(value, max, min):
+    v = (value - min) / (max - min) * (10 - 1) + 1
+    return round(v)
+
+
+# Recommendation function - Sets a recommendation level by normalized score:
+
+def recommend(score):
+    if score in range(5, 8):
+        return 'Recommended'
+    elif score in range(8, 11):
+        return 'Highly Recommended'
+    else:
+        return 'Not related'
+
 def readFromExcel(attribute_dict):
 
     df = pd.read_excel(r'C:\Users\Etai Leers\Desktop\framework1.xlsx', header=[0, 1])
@@ -33,4 +50,10 @@ def readFromExcel(attribute_dict):
     filter_df.sort_values('Sum', ascending=False, inplace=True)
 
     return filter_df
+
+    #TODO: Figure out why this function isnt working
+
+    recommend(5)
+    print('hello')
+
 
