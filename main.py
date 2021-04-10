@@ -24,7 +24,6 @@ class MainWindow:
         self.app.title('Hybrid Managment system V1')
         self.app.resizable(False, False)
 
-        #self.app.geometry('1100x700')
         frame = Frame(self.app, width=1000, height=680)
         frame.configure(background="gray28")
         frame.pack(fill=BOTH, expand=True)

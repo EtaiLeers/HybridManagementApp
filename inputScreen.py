@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter.ttk import Progressbar
 from PIL import Image, ImageTk
 import datetime as dt
 from dashboard import Dashboard
@@ -67,17 +68,18 @@ class Input:
         clock_label.after(20, time)
 
         '''
-        image1 = create_img('Capture.JPG')
-        img = Label(frame, image=image1)
-        img.place(x=15,y=15)
-        '''
-
-        '''
         image2 = create_image('Capture.JPG')
         img2 = Label(frame, image=image2)
         img2.image = image2
         img2.place(x=15, y=15)
         '''
+
+        progress = Progressbar(root, orient=HORIZONTAL, length=300, mode='determinate')
+        progress.place(x=500, y=15)
+
+        def callback(*args):
+            # Increment the progressbar's value by 7.1428%
+            progress["value"] += 7.1428
 
         bottom_header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 30, 'underline'), text='Please fill the following attributes:')
         bottom_header.place(x=240, y=155)
@@ -133,17 +135,23 @@ class Input:
         pl1.config(width=20, bg="GREEN", fg="white")
         pl1.place(x=470, y=230)
 
+        var1.trace("w", callback)
+
         var2 = StringVar(root)
         pl2 = OptionMenu(root, var2, *self.Commitment)
         #var2.trace_add('write', lambda *args: print(var2.get()))
         pl2.config(width =20, bg="GREEN", fg="white")
         pl2.place(x=470, y=270)
 
+        var2.trace("w", callback)
+
         var3 = StringVar(root)
         pl3 = OptionMenu(root, var3, *self.Contract_Type)
         #var3.trace_add('write', lambda *args: print(var3.get()))
-        pl3.config(width = 20,bg = "GREEN", fg="white")
+        pl3.config(width=20, bg="GREEN", fg="white")
         pl3.place(x=470, y=310)
+
+        var3.trace("w", callback)
 
         var4 = StringVar(root)
         pl4 = OptionMenu(root, var4, *self.Customer_Type)
@@ -151,11 +159,15 @@ class Input:
         pl4.config(width=20, bg="GREEN", fg="white")
         pl4.place(x=470, y=350)
 
+        var4.trace("w", callback)
+
         var5 = StringVar(root)
         pl5 = OptionMenu(root, var5, *self.Duration)
         #var5.trace_add('write', lambda *args: print(var5.get()))
         pl5.config(width = 20,bg = "GREEN", fg="white")
         pl5.place(x=470, y=390)
+
+        var5.trace("w", callback)
 
         var6 = StringVar(root)
         pl6 = OptionMenu(root, var6, *self.Goals)
@@ -163,11 +175,15 @@ class Input:
         pl6.config(width = 20,bg = "GREEN", fg="white")
         pl6.place(x=470, y=430)
 
+        var6.trace("w", callback)
+
         var7 = StringVar(root)
         pl7 = OptionMenu(root, var7, *self.Pace)
         #var7.trace_add('write', lambda *args: print(var7.get()))
         pl7.config(width = 20,bg = "GREEN", fg="white")
         pl7.place(x=470, y=470)
+
+        var7.trace("w", callback)
 
         var8 = StringVar(root)
         pl8 = OptionMenu(root, var8, *self.Procedures_and_Regulations)
@@ -175,11 +191,15 @@ class Input:
         pl8.config(width = 20,bg = "GREEN", fg="white")
         pl8.place(x=960, y=230)
 
+        var8.trace("w", callback)
+
         var9 = StringVar(root)
         pl9 = OptionMenu(root, var9, *self.Resources)
         #var9.trace_add('write', lambda *args: print(var9.get()))
         pl9.config(width = 20,bg = "GREEN", fg="white")
         pl9.place(x=960, y=270)
+
+        var9.trace("w", callback)
 
         var10 = StringVar(root)
         pl10 = OptionMenu(root, var10, *self.Scope)
@@ -187,11 +207,15 @@ class Input:
         pl10.config(width = 20,bg = "GREEN", fg="white")
         pl10.place(x=960, y=310)
 
+        var10.trace("w", callback)
+
         var11 = StringVar(root)
         pl11 = OptionMenu(root, var11, *self.Team_Availability)
         #var11.trace_add('write', lambda *args: print(var11.get()))
         pl11.config(width = 20,bg = "GREEN", fg="white")
         pl11.place(x=960, y=350)
+
+        var11.trace("w", callback)
 
         var12 = StringVar(root)
         pl12 = OptionMenu(root, var12, *self.Team_Distribution)
@@ -199,17 +223,23 @@ class Input:
         pl12.config(width = 20,bg = "GREEN", fg="white")
         pl12.place(x=960, y=390)
 
+        var12.trace("w", callback)
+
         var13 = StringVar(root)
         pl13 = OptionMenu(root, var13, *self.Team_Size)
         #var13.trace_add('write', lambda *args: print(var13.get()))
         pl13.config(width=20, bg="GREEN", fg="white")
         pl13.place(x=960, y=430)
 
+        var13.trace("w", callback)
+
         var14 = StringVar(root)
         pl14 = OptionMenu(root, var14, *self.Uncertainty)
         #var14.trace_add('write', lambda *args: print(var14.get()))
         pl14.config(width=20, bg="GREEN", fg="white")
         pl14.place(x=960, y=470)
+
+        var14.trace("w", callback)
 
         #Going to variable defined at the beginning
         global var_dict

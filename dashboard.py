@@ -1,7 +1,4 @@
 from tkinter import *
-from PIL import Image, ImageTk
-import datetime as dt
-import time
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
@@ -9,29 +6,30 @@ import matplotlib.pyplot as plt
 
 class Dashboard:
 
-    #This is a constructor:
     def __init__(self, filterdDf):
 
         self.filterdDf = filterdDf
 
         root =Tk()
         root.title('Dashboard')
-        root.geometry('1300x1000')
+        root.geometry('1300x690')
         root.resizable(False, False)
 
-        frame = Frame(root, width=1000, height=680)
+        frame = Frame(root, width=1300, height=690)
         frame.configure(background="gray28")
         frame.pack(fill=BOTH, expand=True)
 
         #TODO: Place a pie chart in the left side of the dashboard
 
         frameChartsLT = Frame(root)
-        frameChartsLT.pack()
+        # frameChartsLT.pack(side='left', fill='y')
+        frameChartsLT.place(x=120, y=180)
+        frameChartsLT.configure(background="gray28")
 
         fig = Figure()  # create a figure object
         ax = fig.add_subplot(111)  # add an Axes to the figure
 
-        ax.pie(filterdDf[('Sum', '')], radius=1, shadow=True)
+        ax.pie(filterdDf[('Sum', '')], radius=1, autopct='%0.2f%%', shadow=False)
 
         chart1 = FigureCanvasTkAgg(fig, frameChartsLT)
         chart1.get_tk_widget().pack()
@@ -39,10 +37,10 @@ class Dashboard:
         #TODO: Place a table in the right side of the dashboard
 
         total_rows = len(filterdDf)
-        print(total_rows)
+        # print(total_rows)
 
         total_columns = len(filterdDf.columns)
-        print(total_columns)
+        # print(total_columns)
 
 
 
@@ -51,7 +49,8 @@ class Dashboard:
         fig, ax = plt.subplots()
         plt.pie(filterdDf[('Sum', '')])
 
-        # plt.show()
+        print('The Sums of rows:\n')
+        print(filterdDf[('Sum', '')])
 
         plt.savefig('test.png')
         filterdDf.to_excel('filtered_df.xlsx')
