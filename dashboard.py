@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 import datetime as dt
 import time
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
+from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
 
@@ -16,25 +16,45 @@ class Dashboard:
 
         root =Tk()
         root.title('Dashboard')
-        root.geometry('1300x690')
+        root.geometry('1300x1000')
         root.resizable(False, False)
 
         frame = Frame(root, width=1000, height=680)
         frame.configure(background="gray28")
         frame.pack(fill=BOTH, expand=True)
 
-        #TODO: Continue from here:
+        #TODO: Place a pie chart in the left side of the dashboard
 
-        #print(filterdDf)
-        #Check
+        frameChartsLT = Frame(root)
+        frameChartsLT.pack()
+
+        fig = Figure()  # create a figure object
+        ax = fig.add_subplot(111)  # add an Axes to the figure
+
+        ax.pie(filterdDf[('Sum', '')], radius=1, shadow=True)
+
+        chart1 = FigureCanvasTkAgg(fig, frameChartsLT)
+        chart1.get_tk_widget().pack()
+
+        #TODO: Place a table in the right side of the dashboard
+
+        total_rows = len(filterdDf)
+        print(total_rows)
+
+        total_columns = len(filterdDf.columns)
+        print(total_columns)
+
+
+
+        #Saving charts for testing
 
         fig, ax = plt.subplots()
         plt.pie(filterdDf[('Sum', '')])
 
+        # plt.show()
+
         plt.savefig('test.png')
         filterdDf.to_excel('filtered_df.xlsx')
-
-
 
         root.mainloop()
 

@@ -51,7 +51,7 @@ def readFromExcel(attribute_dict):
 
     return filter_df
 
-    #TODO: Figure out why this function isnt working
+    #TODO: Figure out why this function isn't working
 
     recommend(5)
     print('hello')
