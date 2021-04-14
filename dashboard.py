@@ -47,7 +47,7 @@ class Dashboard:
 
         frameChartsLT = Frame(root)
         # frameChartsLT.pack(side='left', fill='y')
-        frameChartsLT.place(x=90, y=180)
+        frameChartsLT.place(x=70, y=140)
         frameChartsLT.configure(background="gray28")
 
         fig = Figure()  # create a figure object
@@ -90,7 +90,7 @@ class Dashboard:
         # tree = ttk.Treeview(frame, columns=(1, 2), height=5, show="headings")
         tree = ttk.Treeview(frame, columns=1, height=rows, show="headings")
         tree.pack(side='left')
-        tree.place(x=750, y=150)
+        tree.place(x=800, y=100)
 
         tree.heading(1, text="Approaches")
         # tree.heading(2, text="Column 2")
