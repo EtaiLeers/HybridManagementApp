@@ -1,35 +1,59 @@
-# Python program to create a table
+import pandas as pd
 
-from tkinter import *
+# Normalize algorithm:
 
-
-class Table:
-
-    def __init__(self, root):
-
-        # code for creating table
-        for i in range(total_rows):
-            for j in range(total_columns):
-                self.e = Entry(root, width=20, fg='blue',
-                               font=('Arial', 16, 'bold'))
-
-                self.e.grid(row=i, column=j)
-                self.e.insert(END, lst[i][j])
+def normalize(value, max, min):
+    v = (value - min) / (max - min) * (10 - 1) + 1
+    return round(v)
 
 
-# take the data
-lst = [(1, 'Raj', 'Mumbai', 19),
-       (2, 'Aaryan', 'Pune', 18),
-       (3, 'Vaishnavi', 'Mumbai', 20),
-       (4, 'Rachna', 'Mumbai', 21),
-       (5, 'Shubham', 'Delhi', 21)]
+# Recommendation function - Sets a recommendation level by normalized score:
 
-# find total number of rows and
-# columns in list
-total_rows = len(lst)
-total_columns = len(lst[0])
+def recommend(score):
+    if score in range(5, 8):
+        return 'Recommended'
+    elif score in range(8, 11):
+        return 'Highly Recommended'
+    else:
+        return 'Not related'
 
-# create root window
-root = Tk()
-t = Table(root)
-root.mainloop()
+def readFromExcel(attribute_dict):
+
+    df = pd.read_excel(r'C:\Users\Etai Leers\Desktop\framework1.xlsx', header=[0, 1])
+
+    filter_df = df.loc[:, [('Approaches', 'All'),
+                           ('Budget', attribute_dict['Budget']),
+                           ('Commitment', attribute_dict['Commitment']),
+                           ('Contract Type', attribute_dict['Contract_Type']),
+                           ('Customer Type', attribute_dict['Customer_Type']),
+                           ('Duration', attribute_dict['Duration']),
+                           ('Goals', attribute_dict['Goals']),
+                           ('Pace', attribute_dict['Pace']),
+                           ('Procedures & Regulations', attribute_dict['Procedures_and_Regulations']),
+                           ('Resources', attribute_dict['Resources']),
+                           ('Scope', attribute_dict['Scope']),
+                           ('Team Availability', attribute_dict['Team_Availability']),
+                           ('Team Distribution', attribute_dict['Team_Distribution']),
+                           ('Team Size', attribute_dict['Team_Size']),
+                           ('Uncertainty', attribute_dict['Uncertainty'])]]
+
+    rate_dict = {
+        "Highly Recommended": 2,
+        "Recommended": 1,
+        "Not Related": 0
+    }
+
+    filter_df.replace(rate_dict, inplace=True)
+
+    filter_df['Sum'] = filter_df.sum(axis=1)
+
+    filter_df.sort_values('Sum', ascending=False, inplace=True)
+
+    recommend(5)
+    print('hello')
+
+    return filter_df
+
+
+
+

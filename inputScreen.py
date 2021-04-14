@@ -13,6 +13,7 @@ from readExcel import readFromExcel
 #I created a dictionary outside of everything
 var_dict = dict()
 
+
 def create_image(filename):
     img = Image.open(filename)
     img.thumbnail((100, 100))
@@ -123,7 +124,7 @@ class Input:
         lbl13 = Label(root, bg="gray28", pady=1, text='Team Size:', fg="cyan2" , font=("Helvetica", 20))
         lbl13.place(x=670, y=425)
 
-        lbl14 = Label(root, bg="gray28", pady=1, text='Uncertainty:', fg="cyan2" , font=("Helvetica", 20))
+        lbl14 = Label(root, bg="gray28", pady=1, text='Uncertainty:', fg="cyan2", font=("Helvetica", 20))
         lbl14.place(x=670, y=465)
 
         # _____________________________________________
@@ -131,7 +132,7 @@ class Input:
         var1 = StringVar(root)
         # var1.set("None") # default value
         pl1 = OptionMenu(root, var1, *self.Budget)
-        #var1.trace_add('write', lambda *args: print(var1.get()))
+        # var1.trace_add('write', lambda *args: print(var1.get()))
         pl1.config(width=20, bg="GREEN", fg="white")
         pl1.place(x=470, y=230)
 

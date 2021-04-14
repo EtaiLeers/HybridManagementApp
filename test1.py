@@ -1,23 +1,36 @@
-import tkinter as tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
+from tkinter import *
+from tkinter import ttk
+
+root = Tk()
+root.geometry("500x200")
+
+data = [["val1", "val2"],
+         ["asd1", "asd2"],
+         ["bbb1", "bbb3"],
+         ["ccc1", "ccc3"],
+         ["ddd1", "ddd3"],
+         ["eee1", "eee3"]]
 
 
+frame = Frame(root)
+frame.pack()
 
-root = tk.Tk()
-frameChartsLT = tk.Frame(root)
-frameChartsLT.pack()
+tree = ttk.Treeview(frame, columns=(1, 2), height=5, show="headings")
+tree.pack(side='left')
 
-stockListExp = ['AMZN' , 'AAPL', 'JETS', 'CCL', 'NCLH']
-stockSplitExp = [15,25,40,10,10]
+tree.heading(1, text="Column 1")
+tree.heading(2, text="Column 2")
 
-fig = Figure() # create a figure object
-ax = fig.add_subplot(111) # add an Axes to the figure
+tree.column(1, width=100)
+tree.column(2, width=100)
 
 
-ax.pie(stockSplitExp, radius=1, labels=stockListExp,autopct='%0.2f%%', shadow=True)
+scroll = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
+scroll.pack(side='right', fill='y')
 
-chart1 = FigureCanvasTkAgg(fig,frameChartsLT)
-chart1.get_tk_widget().pack()
+tree.configure(yscrollcommand=scroll.set)
+
+for val in data:
+    tree.insert('', 'end', values=(val[0], val[1]))
 
 root.mainloop()
