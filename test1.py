@@ -15,6 +15,7 @@ data = [["val1", "val2"],
 frame = Frame(root)
 frame.pack()
 
+
 tree = ttk.Treeview(frame, columns=(1, 2), height=5, show="headings")
 tree.pack(side='left')
 

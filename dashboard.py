@@ -7,6 +7,19 @@ import datetime as dt
 import time
 
 
+def normalize(value, max, min):
+    v = (value - min) / (max - min) * (10 - 1) + 1
+    return round(v)
+
+
+def recommend(score):
+    if score in range(5, 8):
+        return 'Recommended'
+    elif score in range(8, 11):
+        return 'Highly Recommended'
+    else:
+        return 'Not related'
+
 
 class Dashboard:
 
@@ -19,7 +32,7 @@ class Dashboard:
         root.geometry('1300x690')
         root.resizable(False, False)
 
-        frame = Frame(root, width=1300, height=690)
+        frame = Frame(root, width=1000, height=690)
         frame.configure(background="gray28")
         frame.pack(fill=BOTH, expand=True)
 
@@ -43,107 +56,85 @@ class Dashboard:
         bottom_header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15), text='Hybrid Management - where Agile, TOC and waterfall meet together')
         bottom_header.place(x=360, y=650)
 
-        #TODO: Place a pie chart in the left side of the dashboard
-
         frameChartsLT = Frame(root)
         # frameChartsLT.pack(side='left', fill='y')
-        frameChartsLT.place(x=70, y=140)
+        frameChartsLT.place(x=0, y=140)
         frameChartsLT.configure(background="gray28")
 
         fig = Figure()  # create a figure object
         fig.set_facecolor('#474747')  # The color of the background
         ax = fig.add_subplot(111)  # add an Axes to the figure
 
-        ax.pie(filterdDf[('Sum', '')], radius=1, autopct='%0.2f%%', shadow=False)
+        # ax.pie(filterdDf[('Sum', '')], radius=1, autopct='%0.2f%%', shadow=False)
 
         chart1 = FigureCanvasTkAgg(fig, frameChartsLT)
         chart1.get_tk_widget().pack()
 
-        #TODO: Place a table in the right side of the dashboard
+        score = filterdDf['Sum'].values.tolist()
+        print("Score:")
+        print(score)
 
-        #_________________________________________________________________
+        max_value = max(score)
+        min_value = min(score)
 
-        # data = [["val1", "val2"],
-        #         ["asd1", "asd2"],
-        #         ["bbb1", "bbb3"],
-        #         ["ccc1", "ccc3"],
-        #         ["ddd1", "ddd3"],
-        #         ["eee1", "eee3"]]
+        print("Normalized:")
+        print(normalize(score[0], max_value, min_value))
+        print("_________________")
+
+        print("Normalized array:")
+        normalize_scores = []
+        for i in range(len(score)):
+            normalize_scores.append(normalize(score[i], max_value, min_value))
+
+        print(normalize_scores)
+        print("_________________")
+
+        recommendations_array = []
+        for i in range(len(normalize_scores)):
+            val = normalize_scores[i]
+            if val != 'Not related':
+                recommendations_array.append(recommend(val))
+
+        print(recommendations_array)
+        print("_________________")
 
         myData = filterdDf['Approaches'].values.tolist()
 
-        print("____14/4____")
         print(myData)
-
-        # print(filterdDf)
-
-        # print(data.values.tolist())
-
-        # print(filterdDf.loc[:, 'Approaches'])
-
-        # data = filterdDf.loc[:, 'Approaches']
-
-        # filterdDf.loc[:, 'Approaches'].to_excel('data.xlsx')
 
         rows = len(myData)
 
-        # tree = ttk.Treeview(frame, columns=(1, 2), height=5, show="headings")
-        tree = ttk.Treeview(frame, columns=1, height=rows, show="headings")
+        tree = ttk.Treeview(frame, columns=(1, 2), height=rows, show="headings")
         tree.pack(side='left')
-        tree.place(x=800, y=100)
+        tree.place(x=650, y=100)
 
-        tree.heading(1, text="Approaches")
-        # tree.heading(2, text="Column 2")
+        tree.heading(1, text="Approach")
+        tree.heading(2, text="Recommendation")
 
-        tree.column(1, width=300)
-        # tree.column(2, width=300)
+        tree.column(1, width=350)
+        tree.column(2, width=270)
 
         scroll = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
         scroll.pack(side='right', fill='y')
 
         tree.configure(yscrollcommand=scroll.set)
 
-        # for val in data:
-        #     tree.insert('', 'end', values=(val[0], val[1]))
+        for i in range(rows):
+            tree.insert('', 'end', values=(*myData[i], recommendations_array[i]))
 
-        for val in myData:
-            tree.insert('', 'end', values=val)
+        # _________________________________________________________________
 
-        #_________________________________________________________________
-
-        total_rows = len(filterdDf)
-        # print(total_rows)
-
-        total_columns = len(filterdDf.columns)
-        # print(total_columns)
-
-        #Saving charts for testing
-
-        fig, ax = plt.subplots()
-        plt.pie(filterdDf[('Sum', '')])
-
-        plt.savefig('test.png')
-        filterdDf.to_excel('filtered_df.xlsx')
-
-        print('The Sums of rows:\n')
-        print(filterdDf[('Sum', '')])
-
-        root.mainloop()
-
-        #_________________________________________________________________
-
-'''
-    app_dict = {
-        "Waterfall": ['Critical path analysis',
-                      'Presenting the whole picture [End to end]',
-                      'Focus on project stages',
-                      'Emphasis on documentation',
-                      'Detailed requirements specification',
-                      'Progress control by earned value management',
-                      'Hierarchical organizational structure',
-                      'Formal communication',
-                      'High-level planning'],
-        "Agile":     ['Sprint Retrospective',
+        app_dict = {
+            "Waterfall": ['Critical path analysis',
+                          'Presenting the whole picture [End to end]',
+                          'Focus on project stages',
+                          'Emphasis on documentation',
+                          'Detailed requirements specification',
+                          'Progress control by earned value management',
+                          'Hierarchical organizational structure',
+                          'Formal communication',
+                          'High-level planning'],
+            "Agile": ['Sprint Retrospective',
                       'Daily stand-up meetings',
                       'Working system from day one',
                       'Co-management: Customer and supplier cooperation',
@@ -152,11 +143,90 @@ class Dashboard:
                       'Progress control by burn down chart',
                       'Rapid and flexible response to change',
                       'Informal communication'],
-        "TOC":       ['Buffer Management',
-                      'Throughput analysis',
-                      'Focus on critical chain on critical resources',
-                      'Sequential work - No multitasking',
-                      'Forecast projects bottlenecks & constraints',
-                      'Focus resources on the projects main constraint']
-    }
-'''
+            "TOC": ['Buffer Management',
+                    'Throughput analysis',
+                    'Focus on critical chain on critical resources',
+                    'Sequential work - No multitasking',
+                    'Forecast projects bottlenecks & constraints',
+                    'Focus resources on the projects main constraint']
+        }
+
+        waterfall_dict = ['Critical path analysis',
+                          'Presenting the whole picture [End to end]',
+                          'Focus on project stages',
+                          'Emphasis on documentation',
+                          'Detailed requirements specification',
+                          'Progress control by earned value management',
+                          'Hierarchical organizational structure',
+                          'Formal communication',
+                          'High-level planning']
+
+        agile_dict = ['Sprint Retrospective',
+                      'Daily stand-up meetings',
+                      'Working system from day one',
+                      'Co-management: Customer and supplier cooperation',
+                      'Multi-disciplinary teams',
+                      'Self-organizing teams',
+                      'Progress control by burn down chart',
+                      'Rapid and flexible response to change']
+
+        toc_dict = ['Buffer Management',
+                    'Throughput analysis',
+                    'Focus on critical chain on critical resources',
+                    'Sequential work - No multitasking',
+                    'Forecast projects bottlenecks & constraints',
+                    'Focus resources on the projects main constraint']
+
+
+        # _________________________________________________________________
+
+        highly_score = 0
+        recommended_score = 0
+
+        for i in range(len(recommendations_array)):
+            if recommendations_array[i] == 'Highly Recommended':
+                highly_score += 1
+            if recommendations_array[i] == 'Recommended':
+                recommended_score += 1
+
+        print(highly_score)
+        print(recommended_score)
+
+        total_waterfall = 0
+        total_agile = 0
+        total_toc = 0
+
+        for i in range(highly_score):
+            if myData[i] in waterfall_dict:
+                total_waterfall +=1
+            if myData[i] in agile_dict:
+                total_agile += 1
+            else:
+                total_toc += 1
+
+        print(total_waterfall)
+        print(total_agile)
+        print(total_toc)
+
+        # sum_array = [total_waterfall, total_agile, total_toc]
+        check = [5, 7, 6]
+
+        # print("Sum array:")
+        # print(sum_array)
+
+        ax.pie(check, radius=1, autopct='%0.2f%%', shadow=False)
+
+
+        fig, ax = plt.subplots()
+        # plt.pie(filterdDf[('Sum', '')])
+        # plt.pie(check)
+
+        # Saving charts for testing
+
+        plt.savefig('test.png')
+        filterdDf.to_excel('filtered_df.xlsx')
+
+        print('The Sums of rows:\n')
+        print(filterdDf[('Sum', '')])
+
+        root.mainloop()
