@@ -154,14 +154,18 @@ class Dashboard:
         #TODO: Make the pie view look more 3D
         #TODO: Add below the percentage the methods names
 
-        ax.pie(methods_dict.values(), radius=1, autopct='%0.2f%%', shadow=False)
+        colors = ["red", "gold", "yellow"]
+        ax.pie(methods_dict.values(), radius=1, autopct='%1.1f%%', shadow=True, colors=colors)
+        labels = ['Waterfall', 'Agile', 'TOC']
+        patches, texts = plt.pie(methods_dict.values(), colors=colors, shadow=True, startangle=90)
+        ax.legend(patches, labels, loc="best")
 
         fig, ax = plt.subplots()
 
         # Saving charts for testing
 
-        plt.savefig('test.png')
-        ax.pie(methods_dict.values(), radius=1, autopct='%0.2f%%', shadow=False).savefig('Pie_test.png')
+        # plt.savefig('test.png')
+        # ax.pie(methods_dict.values(), radius=1, autopct='%0.2f%%', shadow=False).savefig('Pie_test.png')
 
         filterdDf.to_excel('filtered_df2.xlsx')
 
