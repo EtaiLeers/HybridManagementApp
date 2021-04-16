@@ -7,7 +7,7 @@ import datetime as dt
 import time
 import pandas as pd
 
-#TODO: Add Excel file with users credentials
+#TODO: Add Excel file with users credentials - Login + Register
 
 
 def create_img(filename):

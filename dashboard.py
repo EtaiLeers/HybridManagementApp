@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import ttk
-
 import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -101,8 +100,6 @@ class Dashboard:
         fig.set_facecolor('#474747')  # The color of the background
         ax = fig.add_subplot(111)  # add an Axes to the figure
 
-        # ax.pie(filterdDf[('Sum', '')], radius=1, autopct='%0.2f%%', shadow=False)
-
         chart1 = FigureCanvasTkAgg(fig, frameChartsLT)
         chart1.get_tk_widget().pack()
 
@@ -144,23 +141,19 @@ class Dashboard:
                     methods_dict[key] += 1
                     methods.append(key)
 
-        filterdDf[('Methods','')] = methods
+        filterdDf[('Methods', '')] = methods
+
         print(methods_dict.values())
 
         ax.pie(methods_dict.values(), radius=1, autopct='%0.2f%%', shadow=False)
 
-
         fig, ax = plt.subplots()
-        # plt.pie(filterdDf[('Sum', '')])
-        # plt.pie(check)
 
         # Saving charts for testing
 
         plt.savefig('test.png')
-        # filterdDf.to_excel('filtered_df.xlsx')
 
-        # print('The Sums of rows:\n')
-        # print(filterdDf[('Sum', '')])
+        filterdDf.to_excel('filtered_df2.xlsx')
 
         root.mainloop()
 

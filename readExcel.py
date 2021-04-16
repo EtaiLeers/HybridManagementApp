@@ -32,7 +32,9 @@ def readFromExcel(attribute_dict):
     filter_df['Sum'] = filter_df.sum(axis=1)
 
     filter_df.sort_values('Sum', ascending=False, inplace=True)
+
     filter_df.to_excel('filtered_df.xlsx')
+
     return filter_df
 
 

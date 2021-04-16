@@ -290,7 +290,5 @@ def dashboard():
 
     filterdDf = readFromExcel(var_dict)
 
-    #TODO: Calculate + Normalize of filterdDf
-
     dashboardTk = Dashboard(filterdDf)
     dashboardTk.run()

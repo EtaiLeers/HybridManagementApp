@@ -26,7 +26,7 @@ class MainMenu:
         root.geometry('1300x690')
         root.resizable(False, False)
 
-        frame = Frame(root, width=1000, height=680)
+        frame = Frame(root, width=1000, height=690)
         frame.configure(background="gray28")
         frame.pack(fill=BOTH, expand=True)
 
