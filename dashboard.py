@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import ttk
+
+import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
@@ -19,6 +21,40 @@ def recommend(score):
         return 'Highly Recommended'
     else:
         return 'Not related'
+
+
+app_dict = {
+    "Waterfall": ['Critical path analysis',
+                  'Presenting the whole picture [End to end]',
+                  'Focus on project stages',
+                  'Emphasis on documentation',
+                  'Detailed requirements specification',
+                  'Progress control by earned value management',
+                  'Hierarchical organizational structure',
+                  'Formal communication',
+                  'High-level planning'],
+    "Agile": ['Sprint Retrospective',
+              'Daily stand-up meetings',
+              'Working system from day one',
+              'Co-management: Customer and supplier cooperation',
+              'Multi-disciplinary teams',
+              'Self-organizing teams',
+              'Progress control by burn down chart',
+              'Rapid and flexible response to change',
+              'Informal communication'],
+    "TOC": ['Buffer Management',
+            'Throughput analysis',
+            'Focus on critical chain on critical resources',
+            'Sequential work - No multitasking',
+            "Forecast project's bottlenecks & constraints",
+            'Focus resources on the projects main constraint']
+}
+
+methods_dict = {
+    "Waterfall": 0,
+    "Agile": 0,
+    "TOC": 0
+}
 
 
 class Dashboard:
@@ -70,39 +106,17 @@ class Dashboard:
         chart1 = FigureCanvasTkAgg(fig, frameChartsLT)
         chart1.get_tk_widget().pack()
 
-        score = filterdDf['Sum'].values.tolist()
-        print("Score:")
-        print(score)
+        max_value = max(filterdDf[('Sum', '')])
+        min_value = min(filterdDf[('Sum', '')])
 
-        max_value = max(score)
-        min_value = min(score)
+        filterdDf[('Normalized sum', '')] = filterdDf['Sum'].apply(lambda x: normalize(x, max_value, min_value))
 
-        print("Normalized:")
-        print(normalize(score[0], max_value, min_value))
-        print("_________________")
+        filterdDf[('Recommendation Level', '')] = filterdDf[('Normalized sum', '')].apply(recommend)
 
-        print("Normalized array:")
-        normalize_scores = []
-        for i in range(len(score)):
-            normalize_scores.append(normalize(score[i], max_value, min_value))
+        condition = filterdDf[('Recommendation Level', '')] != 'Not related'
+        filterdDf = filterdDf[condition]
 
-        print(normalize_scores)
-        print("_________________")
-
-        recommendations_array = []
-        for i in range(len(normalize_scores)):
-            val = normalize_scores[i]
-            if val != 'Not related':
-                recommendations_array.append(recommend(val))
-
-        print(recommendations_array)
-        print("_________________")
-
-        myData = filterdDf['Approaches'].values.tolist()
-
-        print(myData)
-
-        rows = len(myData)
+        rows = len(filterdDf)
 
         tree = ttk.Treeview(frame, columns=(1, 2), height=rows, show="headings")
         tree.pack(side='left')
@@ -120,101 +134,20 @@ class Dashboard:
         tree.configure(yscrollcommand=scroll.set)
 
         for i in range(rows):
-            tree.insert('', 'end', values=(*myData[i], recommendations_array[i]))
+            tree.insert('', 'end', values=(filterdDf[('Approaches', 'All')].iloc[i], filterdDf[('Recommendation Level', '')].iloc[i]))
 
-        # _________________________________________________________________
+        methods = []
 
-        app_dict = {
-            "Waterfall": ['Critical path analysis',
-                          'Presenting the whole picture [End to end]',
-                          'Focus on project stages',
-                          'Emphasis on documentation',
-                          'Detailed requirements specification',
-                          'Progress control by earned value management',
-                          'Hierarchical organizational structure',
-                          'Formal communication',
-                          'High-level planning'],
-            "Agile": ['Sprint Retrospective',
-                      'Daily stand-up meetings',
-                      'Working system from day one',
-                      'Co-management: Customer and supplier cooperation',
-                      'Multi-disciplinary teams',
-                      'Self-organizing teams',
-                      'Progress control by burn down chart',
-                      'Rapid and flexible response to change',
-                      'Informal communication'],
-            "TOC": ['Buffer Management',
-                    'Throughput analysis',
-                    'Focus on critical chain on critical resources',
-                    'Sequential work - No multitasking',
-                    'Forecast projects bottlenecks & constraints',
-                    'Focus resources on the projects main constraint']
-        }
+        for app in filterdDf[('Approaches','All')]:
+            for key in app_dict:
+                if app in app_dict[key]:
+                    methods_dict[key] += 1
+                    methods.append(key)
 
-        waterfall_dict = ['Critical path analysis',
-                          'Presenting the whole picture [End to end]',
-                          'Focus on project stages',
-                          'Emphasis on documentation',
-                          'Detailed requirements specification',
-                          'Progress control by earned value management',
-                          'Hierarchical organizational structure',
-                          'Formal communication',
-                          'High-level planning']
+        filterdDf[('Methods','')] = methods
+        print(methods_dict.values())
 
-        agile_dict = ['Sprint Retrospective',
-                      'Daily stand-up meetings',
-                      'Working system from day one',
-                      'Co-management: Customer and supplier cooperation',
-                      'Multi-disciplinary teams',
-                      'Self-organizing teams',
-                      'Progress control by burn down chart',
-                      'Rapid and flexible response to change']
-
-        toc_dict = ['Buffer Management',
-                    'Throughput analysis',
-                    'Focus on critical chain on critical resources',
-                    'Sequential work - No multitasking',
-                    'Forecast projects bottlenecks & constraints',
-                    'Focus resources on the projects main constraint']
-
-
-        # _________________________________________________________________
-
-        highly_score = 0
-        recommended_score = 0
-
-        for i in range(len(recommendations_array)):
-            if recommendations_array[i] == 'Highly Recommended':
-                highly_score += 1
-            if recommendations_array[i] == 'Recommended':
-                recommended_score += 1
-
-        print(highly_score)
-        print(recommended_score)
-
-        total_waterfall = 0
-        total_agile = 0
-        total_toc = 0
-
-        for i in range(highly_score):
-            if myData[i] in waterfall_dict:
-                total_waterfall +=1
-            if myData[i] in agile_dict:
-                total_agile += 1
-            else:
-                total_toc += 1
-
-        print(total_waterfall)
-        print(total_agile)
-        print(total_toc)
-
-        # sum_array = [total_waterfall, total_agile, total_toc]
-        check = [5, 7, 6]
-
-        # print("Sum array:")
-        # print(sum_array)
-
-        ax.pie(check, radius=1, autopct='%0.2f%%', shadow=False)
+        ax.pie(methods_dict.values(), radius=1, autopct='%0.2f%%', shadow=False)
 
 
         fig, ax = plt.subplots()
@@ -224,9 +157,12 @@ class Dashboard:
         # Saving charts for testing
 
         plt.savefig('test.png')
-        filterdDf.to_excel('filtered_df.xlsx')
+        # filterdDf.to_excel('filtered_df.xlsx')
 
-        print('The Sums of rows:\n')
-        print(filterdDf[('Sum', '')])
+        # print('The Sums of rows:\n')
+        # print(filterdDf[('Sum', '')])
 
         root.mainloop()
+
+# df = pd.read_excel('filtered_df.xlsx', header=[0,1])
+# dash = Dashboard(df)
