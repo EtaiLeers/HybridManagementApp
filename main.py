@@ -8,6 +8,9 @@ import time
 import pandas as pd
 
 #TODO: Add Excel file with users credentials - Login + Register
+#TODO: Add Errors handling
+#TODO: Destroy windows when moving
+#TODO: Add back button to previous windows
 
 
 def create_img(filename):
@@ -15,6 +18,8 @@ def create_img(filename):
     img.thumbnail((100, 100))
     p_img = ImageTk.PhotoImage(img)
     return p_img
+
+#TODO: Add Clock
 
 
 class MainWindow:
@@ -62,7 +67,7 @@ class MainWindow:
         self.login = Button(self.app, text='Login', pady=5, padx=30, command=menu)
         self.login.place(x=450, y=400)
 
-        #TODO: Undo hiding to the following line in order to enable users registration:
+        #Undo hiding to the following line in order to enable users registration:
 
         # self.register = Button(self.app, text='Register', pady=5, padx=20, command=register)
         # self.register.place(x=900, y=640)

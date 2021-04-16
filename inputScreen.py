@@ -25,6 +25,7 @@ def close_window():
     import sys
     sys.exit()
 
+#TODO: Add Logo
 
 class Input:
 
@@ -77,6 +78,8 @@ class Input:
 
         progress = Progressbar(root, orient=HORIZONTAL, length=300, mode='determinate')
         progress.place(x=500, y=15)
+
+        #TODO: Fix the bug of the progress bar
 
         def callback(*args):
             # Increment the progressbar's value by 7.1428%

@@ -55,6 +55,7 @@ methods_dict = {
     "TOC": 0
 }
 
+#TODO: Add Logo
 
 class Dashboard:
 
@@ -88,7 +89,8 @@ class Dashboard:
         clock_label.place(x=1135, y=40)
         clock_label.after(20, time)
 
-        bottom_header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15), text='Hybrid Management - where Agile, TOC and waterfall meet together')
+        bottom_header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15),
+                              text='Hybrid Management - where Agile, TOC and waterfall meet together')
         bottom_header.place(x=360, y=650)
 
         frameChartsLT = Frame(root)
@@ -117,13 +119,16 @@ class Dashboard:
 
         tree = ttk.Treeview(frame, columns=(1, 2), height=rows, show="headings")
         tree.pack(side='left')
-        tree.place(x=650, y=100)
+        tree.place(x=600, y=150)
+
+        #TODO: Change font size in the table
+        #TODO: Change the color of the rows according to the method type
 
         tree.heading(1, text="Approach")
         tree.heading(2, text="Recommendation")
 
         tree.column(1, width=350)
-        tree.column(2, width=270)
+        tree.column(2, width=150)
 
         scroll = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
         scroll.pack(side='right', fill='y')
@@ -131,11 +136,12 @@ class Dashboard:
         tree.configure(yscrollcommand=scroll.set)
 
         for i in range(rows):
-            tree.insert('', 'end', values=(filterdDf[('Approaches', 'All')].iloc[i], filterdDf[('Recommendation Level', '')].iloc[i]))
+            tree.insert('', 'end', values=(filterdDf[('Approaches', 'All')].iloc[i],
+                                           filterdDf[('Recommendation Level', '')].iloc[i]))
 
         methods = []
 
-        for app in filterdDf[('Approaches','All')]:
+        for app in filterdDf[('Approaches', 'All')]:
             for key in app_dict:
                 if app in app_dict[key]:
                     methods_dict[key] += 1
@@ -145,6 +151,9 @@ class Dashboard:
 
         print(methods_dict.values())
 
+        #TODO: Make the pie view look more 3D
+        #TODO: Add below the percentage the methods names
+
         ax.pie(methods_dict.values(), radius=1, autopct='%0.2f%%', shadow=False)
 
         fig, ax = plt.subplots()
@@ -152,6 +161,7 @@ class Dashboard:
         # Saving charts for testing
 
         plt.savefig('test.png')
+        ax.pie(methods_dict.values(), radius=1, autopct='%0.2f%%', shadow=False).savefig('Pie_test.png')
 
         filterdDf.to_excel('filtered_df2.xlsx')
 

@@ -16,6 +16,8 @@ def create_img(filename):
 def message():
     messagebox.showinfo("Hybrid Management - Notification", "We're sorry, this functionality is not supported yet.")
 
+#TODO: Add Clock
+
 
 class MainMenu:
 
