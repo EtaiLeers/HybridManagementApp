@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from PIL import Image, ImageTk
 # from login import Login, Register
 from inputScreen import Input
@@ -7,7 +8,26 @@ import datetime as dt
 import time
 import pandas as pd
 
-#TODO: Add Excel file with users credentials - Login + Register
+#TODO: Finish writing the validate function for login
+
+
+def validate(username, password):
+
+    users_frame = pd.read_excel(r'C:\Users\Etai Leers\Desktop\Hybrid_management_system_users.xlsx')
+    print(users_frame)
+
+    total_rows = len(users_frame.index)
+
+    for i in range(total_rows):
+
+        if (users_frame['User name'][i] == username) and (users_frame['Password'][i] == password):
+            messagebox.showinfo('Successful', 'Login Was Successful')
+        else:
+            messagebox.showerror('Error', 'Wrong Credentials')
+
+
+#TODO: Write Register function
+
 #TODO: Add Errors handling
 #TODO: Destroy windows when moving
 #TODO: Add back button to previous windows
@@ -26,7 +46,7 @@ class MainWindow:
 
     def __init__(self):
         self.app = Tk()
-        self.app.title('Hybrid Managment system V1')
+        self.app.title('Hybrid Management system V1')
         self.app.resizable(False, False)
 
         frame = Frame(self.app, width=1000, height=680)
@@ -64,6 +84,7 @@ class MainWindow:
         print(self.usernameE)
 
         #self.login = Button(self.app, text='Login',pady=5, padx=30, command=login)
+        # self.login = Button(self.app, text='Login', pady=5, padx=30, command=validate(self.usernameS, self.passwordS))
         self.login = Button(self.app, text='Login', pady=5, padx=30, command=menu)
         self.login.place(x=450, y=400)
 
@@ -87,6 +108,8 @@ def menu():
     main.app.destroy()
     inputTk = MainMenu()
     inputTk.run()
+
+
 
 #Go straight to the Input screen:
 

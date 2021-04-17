@@ -57,6 +57,7 @@ methods_dict = {
 
 #TODO: Add Logo
 
+
 class Dashboard:
 
     def __init__(self, filterdDf):
@@ -154,7 +155,7 @@ class Dashboard:
         #TODO: Make the pie view look more 3D
         #TODO: Add below the percentage the methods names
 
-        colors = ["red", "gold", "yellow"]
+        colors = ["lightskyblue", "turquoise", "deepskyblue"]
         ax.pie(methods_dict.values(), radius=1, autopct='%1.1f%%', shadow=True, colors=colors)
         labels = ['Waterfall', 'Agile', 'TOC']
         patches, texts = plt.pie(methods_dict.values(), colors=colors, shadow=True, startangle=90)

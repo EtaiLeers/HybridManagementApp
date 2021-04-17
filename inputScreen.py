@@ -80,6 +80,7 @@ class Input:
         progress.place(x=500, y=15)
 
         #TODO: Fix the bug of the progress bar
+        #TODO: Add exception pop up message for missing attributes
 
         def callback(*args):
             # Increment the progressbar's value by 7.1428%
@@ -94,19 +95,19 @@ class Input:
         lbl2 = Label(root, bg="gray28", pady=1, text='Commitment:', fg="cyan2" , font=("Helvetica", 20))
         lbl2.place(x=240, y=265)
 
-        lbl3 = Label(root, bg="gray28", pady=1, text='Contract Type:', fg="cyan2" , font=("Helvetica", 20))
+        lbl3 = Label(root, bg="gray28", pady=1, text='Contract Type:', fg="cyan2", font=("Helvetica", 20))
         lbl3.place(x=240, y=305)
 
-        lbl4 = Label(root, bg="gray28", pady=1, text='Customer Type:', fg="cyan2" , font=("Helvetica", 20))
+        lbl4 = Label(root, bg="gray28", pady=1, text='Customer Type:', fg="cyan2", font=("Helvetica", 20))
         lbl4.place(x=240, y=345)
 
-        lbl5 = Label(root, bg="gray28", pady=1, text='Duration:', fg="cyan2" , font=("Helvetica", 20))
+        lbl5 = Label(root, bg="gray28", pady=1, text='Duration:', fg="cyan2", font=("Helvetica", 20))
         lbl5.place(x=240, y=385)
 
-        lbl6 = Label(root, bg="gray28", pady=1, text='Goals:', fg="cyan2" , font=("Helvetica", 20))
+        lbl6 = Label(root, bg="gray28", pady=1, text='Goals:', fg="cyan2", font=("Helvetica", 20))
         lbl6.place(x=240, y=425)
 
-        lbl7 = Label(root, bg="gray28", pady=1, text='Pace:', fg="cyan2" , font=("Helvetica", 20))
+        lbl7 = Label(root, bg="gray28", pady=1, text='Pace:', fg="cyan2", font=("Helvetica", 20))
         lbl7.place(x=240, y=465)
 
         lbl8 = Label(root, bg="gray28", pady=1, text='Proc. and Regs:', fg="cyan2" , font=("Helvetica", 20))
