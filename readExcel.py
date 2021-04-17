@@ -2,6 +2,7 @@ import pandas as pd
 
 #TODO: Add missing TOC row from the framewrok.xlsx
 
+
 def readFromExcel(attribute_dict):
 
     df = pd.read_excel(r'C:\Users\Etai Leers\Desktop\framework1.xlsx', header=[0, 1])

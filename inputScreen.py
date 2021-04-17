@@ -27,6 +27,7 @@ def close_window():
 
 #TODO: Add Logo
 
+
 class Input:
 
     Budget = {'Flexible', 'Variable', 'Fixed'}
@@ -86,7 +87,8 @@ class Input:
             # Increment the progressbar's value by 7.1428%
             progress["value"] += 7.1428
 
-        bottom_header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 30, 'underline'), text='Please fill the following attributes:')
+        bottom_header = Label(root, bg="gray28", fg="white", pady=3,
+                              font=("Helvetica", 30, 'underline'), text='Please fill the following attributes:')
         bottom_header.place(x=240, y=155)
 
         lbl1 = Label(root, bg="gray28", pady=1, text='Budget:', fg="cyan2" , font=("Helvetica", 20))
@@ -265,18 +267,23 @@ class Input:
 
         #_____________________________________________
 
-        bottom_header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15), text='Hybrid Management - where Agile, TOC and waterfall meet together')
+        bottom_header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15),
+                              text='Hybrid Management - where Agile, TOC and waterfall meet together')
         bottom_header.place(x=360, y=650)
 
         #_____________________________________________
 
-        button1 = Button(root, text="GO Hybrid !", command=dashboard)
+        #TODO: Replace between this lines: (Test)
+
+        # button1 = Button(root, text="GO Hybrid !", command=dashboard)
+        button1 = Button(root, text="Test", command=test)
         button1.config(width=25, bg="white")
         button1.place(x=600, y=590)
 
         #_____________________________________________
 
-        w = Label(root, text=f"{dt.datetime.now():%a, %b %d %Y}", bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
+        w = Label(root, text=f"{dt.datetime.now():%a, %b %d %Y}",
+                  bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
         w.place(x=1100, y=15)
 
         root.mainloop()
@@ -291,6 +298,34 @@ def dashboard():
     for key in var_dict.keys():
         var = var_dict[key]
         var_dict[key] = var.get()
+
+    filterdDf = readFromExcel(var_dict)
+
+    dashboardTk = Dashboard(filterdDf)
+    dashboardTk.run()
+
+
+#TODO: Delete function before submitting: (Debugging only)
+
+def test():
+
+    global var_dict
+
+    var_dict = dict(Budget="Fixed",
+                    Commitment="Low",
+                    Contract_Type="Hybrid",
+                    Customer_Type="Market",
+                    Duration="Long",
+                    Goals="Unclear",
+                    Pace="Fast",
+                    Procedures_and_Regulations="None",
+                    Resources="Standart",
+                    Scope="Rigid",
+                    Team_Availability="Fully",
+                    Team_Distribution="Global",
+                    Team_Size="Small",
+                    Uncertainty="Predictable")
+
 
     filterdDf = readFromExcel(var_dict)
 

@@ -43,8 +43,8 @@ class MainMenu:
         img2.image = image2
         img2.place(x=15, y=15)
 
-        bottom_header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 30), text='Main Menu:')
-        bottom_header.place(x=540, y=155)
+        header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 30), text='Main Menu:')
+        header.place(x=540, y=155)
 
         button1 = Button(root, text="Insert New Project", command=input)
         button1.config(bg="aquamarine2", pady=10, padx=20, width=20, height=4)

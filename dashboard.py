@@ -14,9 +14,9 @@ def normalize(value, max, min):
 
 
 def recommend(score):
-    if score in range(5, 8):
+    if score in range(6, 9):
         return 'Recommended'
-    elif score in range(8, 11):
+    elif score in range(9, 11):
         return 'Highly Recommended'
     else:
         return 'Not related'
@@ -42,7 +42,6 @@ app_dict = {
               'Rapid and flexible response to change',
               'Informal communication'],
     "TOC": ['Buffer Management',
-            'Throughput analysis',
             'Focus on critical chain on critical resources',
             'Sequential work - No multitasking',
             "Forecast project's bottlenecks & constraints",
@@ -69,11 +68,16 @@ class Dashboard:
         root.geometry('1300x690')
         root.resizable(False, False)
 
-        frame = Frame(root, width=1000, height=690)
+        frame = Frame(root, width=1100, height=690)
         frame.configure(background="gray28")
         frame.pack(fill=BOTH, expand=True)
 
-        w = Label(root, text=f"{dt.datetime.now():%a, %b %d %Y}", bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
+        header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 26),
+                       text='Hybrid management - system recommendations:')
+        header.place(x=30, y=20)
+
+        w = Label(root, text=f"{dt.datetime.now():%a, %b %d %Y}",
+                  bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
         w.place(x=1100, y=15)
 
         now = time.strftime("%H:%M:%S")
@@ -96,8 +100,8 @@ class Dashboard:
 
         frameChartsLT = Frame(root)
         # frameChartsLT.pack(side='left', fill='y')
-        frameChartsLT.place(x=0, y=140)
-        frameChartsLT.configure(background="gray28")
+        frameChartsLT.place(x=-100, y=100)
+        # frameChartsLT.configure(background="gray28")
 
         fig = Figure()  # create a figure object
         fig.set_facecolor('#474747')  # The color of the background
@@ -118,18 +122,38 @@ class Dashboard:
 
         rows = len(filterdDf)
 
-        tree = ttk.Treeview(frame, columns=(1, 2), height=rows, show="headings")
+        tree = ttk.Treeview(root, columns=(1, 2), height=rows, show="headings")
         tree.pack(side='left')
-        tree.place(x=600, y=150)
+        tree.place(x=700, y=150)
+
+        #Add some style:
+        style = ttk.Style()
+
+        style.theme_use("clam")
+
+
+        style.configure("Treeview",
+                        background="silver",
+                        foreground="black",
+                        rowheight=55,
+                        fieldbackground="silver")
+
+        #Change selected color:
+        style.map("Treeview",
+                  background=[('selected', 'green')])
 
         #TODO: Change font size in the table
         #TODO: Change the color of the rows according to the method type
 
-        tree.heading(1, text="Approach")
-        tree.heading(2, text="Recommendation")
+        tree.heading("#0", text="Label", anchor=W)
+        tree.heading("#1", text="Approach", anchor=CENTER)
+        tree.heading("#2", text="Recommendation", anchor=CENTER)
 
-        tree.column(1, width=350)
-        tree.column(2, width=150)
+        # tree['columns'] = ("Approach", "Recommendation")
+
+        tree.column("#0", width=120, minwidth=25)
+        tree.column("#1", width=300, minwidth=25, anchor=W)
+        tree.column("#2", width=150, minwidth=25, anchor=CENTER)
 
         scroll = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
         scroll.pack(side='right', fill='y')
@@ -137,7 +161,7 @@ class Dashboard:
         tree.configure(yscrollcommand=scroll.set)
 
         for i in range(rows):
-            tree.insert('', 'end', values=(filterdDf[('Approaches', 'All')].iloc[i],
+            tree.insert(parent='', index='end', values=(filterdDf[('Approaches', 'All')].iloc[i],
                                            filterdDf[('Recommendation Level', '')].iloc[i]))
 
         methods = []

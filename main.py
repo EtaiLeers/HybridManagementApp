@@ -8,6 +8,8 @@ import datetime as dt
 import time
 import pandas as pd
 
+#TODO: Make the program run as .exe file
+#TODO: Instead of reading from excel file - upload the framework to web and connect with URL?
 #TODO: Finish writing the validate function for login
 
 
