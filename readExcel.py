@@ -5,7 +5,7 @@ import pandas as pd
 
 def readFromExcel(attribute_dict):
 
-    df = pd.read_excel(r'C:\Users\Etai Leers\Desktop\framework1.xlsx', header=[0, 1])
+    df = pd.read_excel(r'framework1.xlsx', header=[0, 1])
 
     filter_df = df.loc[:, [('Approaches', 'All'),
                            ('Budget', attribute_dict['Budget']),
