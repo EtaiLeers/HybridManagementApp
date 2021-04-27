@@ -16,7 +16,7 @@ def create_img(filename):
 def message():
     messagebox.showinfo("Hybrid Management - Notification", "We're sorry, this functionality is not supported yet.")
 
-#TODO: Add Clock
+#TODO: Add Username value in the upper left corner
 
 
 class MainMenu:
@@ -37,6 +37,17 @@ class MainMenu:
 
         now = time.strftime("%H:%M:%S")
         clock_label = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
+
+        def display_time():
+            now = time.strftime("%H:%M:%S")
+            clock_label.configure(text=now)
+            root.after(20, display_time)
+
+        display_time()
+
+        clock_label.configure(text=now)
+        clock_label.place(x=1135, y=40)
+        clock_label.after(20, time)
 
         image2 = create_img('Capture.JPG')
         img2 = Label(frame, image=image2)

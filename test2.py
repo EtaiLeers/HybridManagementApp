@@ -1,59 +1,76 @@
-import pandas as pd
+from tkinter import *
+from tkinter import ttk
+from PIL import Image, ImageTk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+import numpy as np
+import datetime as dt
+import time
 
-# Normalize algorithm:
-
-def normalize(value, max, min):
-    v = (value - min) / (max - min) * (10 - 1) + 1
-    return round(v)
-
-
-# Recommendation function - Sets a recommendation level by normalized score:
-
-def recommend(score):
-    if score in range(5, 8):
-        return 'Recommended'
-    elif score in range(8, 11):
-        return 'Highly Recommended'
-    else:
-        return 'Not related'
-
-def readFromExcel(attribute_dict):
-
-    df = pd.read_excel(r'C:\Users\Etai Leers\Desktop\framework1.xlsx', header=[0, 1])
-
-    filter_df = df.loc[:, [('Approaches', 'All'),
-                           ('Budget', attribute_dict['Budget']),
-                           ('Commitment', attribute_dict['Commitment']),
-                           ('Contract Type', attribute_dict['Contract_Type']),
-                           ('Customer Type', attribute_dict['Customer_Type']),
-                           ('Duration', attribute_dict['Duration']),
-                           ('Goals', attribute_dict['Goals']),
-                           ('Pace', attribute_dict['Pace']),
-                           ('Procedures & Regulations', attribute_dict['Procedures_and_Regulations']),
-                           ('Resources', attribute_dict['Resources']),
-                           ('Scope', attribute_dict['Scope']),
-                           ('Team Availability', attribute_dict['Team_Availability']),
-                           ('Team Distribution', attribute_dict['Team_Distribution']),
-                           ('Team Size', attribute_dict['Team_Size']),
-                           ('Uncertainty', attribute_dict['Uncertainty'])]]
-
-    rate_dict = {
-        "Highly Recommended": 2,
-        "Recommended": 1,
-        "Not Related": 0
-    }
-
-    filter_df.replace(rate_dict, inplace=True)
-
-    filter_df['Sum'] = filter_df.sum(axis=1)
-
-    filter_df.sort_values('Sum', ascending=False, inplace=True)
-
-    recommend(5)
-    print('hello')
-
-    return filter_df
+from pandas._libs.reshape import explode
 
 
+def create_img(filename):
+    img = Image.open(filename)
+    img.thumbnail((100, 100))
+    p_img = ImageTk.PhotoImage(img)
+    return p_img
 
 
+class Dashboard:
+
+    def __init__(self):
+
+        root =Tk()
+        root.title('Dashboard')
+        root.geometry('1300x690')
+        root.resizable(False, False)
+        # root.configure(background="gray28")
+
+        image2 = create_img('Capture.JPG')
+        img2 = Label(root, image=image2)
+        img2.image = image2
+        img2.place(x=15, y=15)
+
+        w = Label(root, text=f"{dt.datetime.now():%a, %b %d %Y}", fg="white", bg="gray28", pady=3, font=("Helvetica", 15))
+        w.place(x=1100, y=15)
+
+        now = time.strftime("%H:%M:%S")
+        clock_label = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
+
+        def display_time():
+            now = time.strftime("%H:%M:%S")
+            clock_label.configure(text=now)
+            root.after(20, display_time)
+
+        display_time()
+
+        clock_label.configure(text=now)
+        clock_label.place(x=1135, y=40)
+        clock_label.after(20, time)
+
+        y = np.array([35, 25, 25, 15])
+        mylabels = ["Apples", "Bananas", "Cherries", "Dates"]
+        mycolors = ["black", "hotpink", "b", "#4CAF50"]
+        myexplode = [0.2, 0, 0, 0]
+        plt.pie(y, labels=mylabels, colors=mycolors, explode = myexplode, shadow = True)
+        plt.legend(title = "Four Fruits:")
+        plt.show()
+        explode = (0, 0.1, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
+        fig1, ax1 = plt.subplots()
+        ax1.pie(y, explode=explode, labels=mylabels, autopct='%1.1f%%',
+                shadow=True, startangle=90)
+        ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+        plt.show()
+
+
+        bottom_header = Label(root, fg="white",bg="gray28", pady=3, font=("Helvetica", 15),
+                              text='Hybrid Management - where Agile, TOC and waterfall meet together')
+        bottom_header.place(x=360, y=650)
+
+        root.mainloop()
+
+
+test = Dashboard()

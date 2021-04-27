@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-import pandas as pd
+from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
@@ -20,6 +20,13 @@ def recommend(score):
         return 'Highly Recommended'
     else:
         return 'Not related'
+
+
+def create_img(filename):
+    img = Image.open(filename)
+    img.thumbnail((100, 100))
+    p_img = ImageTk.PhotoImage(img)
+    return p_img
 
 
 app_dict = {
@@ -68,11 +75,19 @@ class Dashboard:
         root.geometry('1300x690')
         root.resizable(False, False)
 
+        # frame = Frame(root)
         frame = Frame(root, width=1100, height=690)
         frame.configure(background="gray28")
         frame.pack(fill=BOTH, expand=True)
 
-        header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 26),
+        '''
+        image2 = create_img('Capture.JPG')
+        img2 = Label(frame, image=image2)
+        img2.image = image2
+        img2.place(x=15, y=15)
+        '''
+
+        header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 26, 'underline'),
                        text='Hybrid management - system recommendations:')
         header.place(x=30, y=20)
 
@@ -126,22 +141,6 @@ class Dashboard:
         tree.pack(side='left')
         tree.place(x=700, y=150)
 
-        #Add some style:
-        style = ttk.Style()
-
-        style.theme_use("clam")
-
-
-        style.configure("Treeview",
-                        background="silver",
-                        foreground="black",
-                        rowheight=55,
-                        fieldbackground="silver")
-
-        #Change selected color:
-        style.map("Treeview",
-                  background=[('selected', 'green')])
-
         #TODO: Change font size in the table
         #TODO: Change the color of the rows according to the method type
 
@@ -155,7 +154,22 @@ class Dashboard:
         tree.column("#1", width=300, minwidth=25, anchor=W)
         tree.column("#2", width=150, minwidth=25, anchor=CENTER)
 
-        scroll = ttk.Scrollbar(frame, orient="vertical", command=tree.yview)
+        #Add some style:
+        style = ttk.Style(root)
+
+        style.theme_use("clam")
+
+        style.configure("Treeview",
+                        background="silver",
+                        foreground="black",
+                        rowheight=15,
+                        fieldbackground="silver")
+
+        #Change selected color:
+        style.map("Treeview",
+                  background=[('selected', 'green')])
+
+        scroll = ttk.Scrollbar(root, orient="vertical", command=tree.yview)
         scroll.pack(side='right', fill='y')
 
         tree.configure(yscrollcommand=scroll.set)
