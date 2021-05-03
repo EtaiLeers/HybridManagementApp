@@ -39,7 +39,7 @@ class Database:
 
         validate_data = '''SELECT * FROM users WHERE username = ? '''
 
-        self.cursor.execute(validate_data, data)
+        self.cursor.execute(validate_data, (data,))
         # self.cursor.execute(validate_data, ('Etai',))
         row = self.cursor.fetchall()
 

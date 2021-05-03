@@ -98,16 +98,16 @@ class Dashboard:
         now = time.strftime("%H:%M:%S")
         clock_label = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
 
-        def display_time():
-            now = time.strftime("%H:%M:%S")
-            clock_label.configure(text=now)
-            root.after(20, display_time)
-
-        display_time()
-
-        clock_label.configure(text=now)
-        clock_label.place(x=1135, y=40)
-        clock_label.after(20, time)
+        # def display_time():
+        #     now = time.strftime("%H:%M:%S")
+        #     clock_label.configure(text=now)
+        #     root.after(20, display_time)
+        #
+        # display_time()
+        #
+        # clock_label.configure(text=now)
+        # clock_label.place(x=1135, y=40)
+        # clock_label.after(20, time)
 
         bottom_header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15),
                               text='Hybrid Management - where Agile, TOC and waterfall meet together')
@@ -186,7 +186,7 @@ class Dashboard:
                     methods_dict[key] += 1
                     methods.append(key)
 
-        filterdDf[('Methods', '')] = methods
+        filterdDf.loc[:,('Methods', '')] = methods
 
         print(methods_dict.values())
 
@@ -195,7 +195,11 @@ class Dashboard:
 
         colors = ["lightskyblue", "turquoise", "deepskyblue"]
         ax.pie(methods_dict.values(), radius=1, autopct='%1.1f%%', shadow=True, colors=colors)
-        labels = ['Waterfall', 'Agile', 'TOC']
+
+        # methods_dict['TOC'] = 8
+        labels = sorted(methods_dict.keys(),key=lambda x: methods_dict[x],reverse=True)
+
+        # labels = ['Waterfall', 'Agile', 'TOC']
         patches, texts = plt.pie(methods_dict.values(), colors=colors, shadow=True, startangle=90)
         ax.legend(patches, labels, loc="best")
 
