@@ -7,6 +7,7 @@ from dashboard import Dashboard
 import dashboard
 import time
 from readExcel import readFromExcel
+import tkinter.ttk as ttk
 
 # global Budget, Commitment, Contract_Type, Customer_Type, Duration, Goals, Pace, Procedures_and_Regulations
 # global Resources, Scope, Team_Availability, Team_Distribution, Team_Size, Uncertainty
@@ -25,9 +26,6 @@ def create_image(filename):
 def close_window():
     import sys
     sys.exit()
-
-
-# TODO: Add Logo
 
 
 class Input:
@@ -71,21 +69,37 @@ class Input:
         # clock_label.place(x=1135, y=40)
         # clock_label.after(20, time)
 
-        image2 = create_image('Capture.JPG')
+        image2 = create_image('Images/Capture.JPG')
         img2 = Label(image=image2)
         img2.image = image2
         img2.place(x=15, y=15)
 
+        #TODO: Add the percentage text inside the progress bar (Feature)
 
-        progress = Progressbar(self.root, orient=HORIZONTAL, length=300, mode='determinate')
-        progress.place(x=500, y=15)
+        # style = ttk.Style(self.root)
+        #
+        # percentage1 = [1,2]
+        #
+        # style.layout('text.Horizontal.TProgressbar',
+        #              [('Horizontal.Progressbar.trough',
+        #                {'children': [('Horizontal.Progressbar.pbar',
+        #                               {'side': 'left', 'sticky': 'ns'})],
+        #                 'sticky': 'nswe'}),
+        #               ('Horizontal.Progressbar.label', {'sticky': ''})])
+        #
+        # style.configure('text.Horizontal.TProgressbar', text='{:g} %'.format(percentage1[1]))
 
-        # TODO: Fix the bug of the progress bar
-        # TODO: Add exception pop up message for missing attributes
+        # style = 'text.Horizontal.TProgressbar'
+
+        progress = ttk.Progressbar(self.root, orient=HORIZONTAL, length=600, mode='determinate')
+        progress.place(x=350, y=20)
 
         def callback(*args):
-            # Increment the progressbar's value by 7.1428%
-            progress["value"] += 7.1428
+            percentage = 7.1428
+            user_input = (var1.get(), var2.get(), var3.get(), var4.get(), var5.get(), var6.get(), var7.get(),
+                          var8.get(), var9.get(), var10.get(),var11.get() ,var12.get(),var13.get(),var14.get())
+            value = 100 - percentage * user_input.count("") - percentage * user_input.count("Select option")
+            progress.config(value=value)
 
         bottom_header = Label(self.root, bg="gray28", fg="white", pady=3,
                               font=("Helvetica", 30, 'underline'), text='Please fill the following attributes:')
@@ -136,7 +150,7 @@ class Input:
         # _____________________________________________
 
         var1 = StringVar(self.root)
-        # var1.set("None") # default value
+        var1.set("Select option")
         pl1 = OptionMenu(self.root, var1, *self.Budget)
         # var1.trace_add('write', lambda *args: print(var1.get()))
         pl1.config(width=20, bg="GREEN", fg="white")
@@ -145,6 +159,7 @@ class Input:
         var1.trace("w", callback)
 
         var2 = StringVar(self.root)
+        var2.set("Select option")
         pl2 = OptionMenu(self.root, var2, *self.Commitment)
         # var2.trace_add('write', lambda *args: print(var2.get()))
         pl2.config(width=20, bg="GREEN", fg="white")
@@ -153,6 +168,7 @@ class Input:
         var2.trace("w", callback)
 
         var3 = StringVar(self.root)
+        var3.set("Select option")
         pl3 = OptionMenu(self.root, var3, *self.Contract_Type)
         # var3.trace_add('write', lambda *args: print(var3.get()))
         pl3.config(width=20, bg="GREEN", fg="white")
@@ -161,6 +177,7 @@ class Input:
         var3.trace("w", callback)
 
         var4 = StringVar(self.root)
+        var4.set("Select option")
         pl4 = OptionMenu(self.root, var4, *self.Customer_Type)
         # var4.trace_add('write', lambda *args: print(var4.get()))
         pl4.config(width=20, bg="GREEN", fg="white")
@@ -169,6 +186,7 @@ class Input:
         var4.trace("w", callback)
 
         var5 = StringVar(self.root)
+        var5.set("Select option")
         pl5 = OptionMenu(self.root, var5, *self.Duration)
         # var5.trace_add('write', lambda *args: print(var5.get()))
         pl5.config(width=20, bg="GREEN", fg="white")
@@ -177,6 +195,7 @@ class Input:
         var5.trace("w", callback)
 
         var6 = StringVar(self.root)
+        var6.set("Select option")
         pl6 = OptionMenu(self.root, var6, *self.Goals)
         # var6.trace_add('write', lambda *args: print(var6.get()))
         pl6.config(width=20, bg="GREEN", fg="white")
@@ -185,6 +204,7 @@ class Input:
         var6.trace("w", callback)
 
         var7 = StringVar(self.root)
+        var7.set("Select option")
         pl7 = OptionMenu(self.root, var7, *self.Pace)
         # var7.trace_add('write', lambda *args: print(var7.get()))
         pl7.config(width=20, bg="GREEN", fg="white")
@@ -193,6 +213,7 @@ class Input:
         var7.trace("w", callback)
 
         var8 = StringVar(self.root)
+        var8.set("Select option")
         pl8 = OptionMenu(self.root, var8, *self.Procedures_and_Regulations)
         # var8.trace_add('write', lambda *args: print(var8.get()))
         pl8.config(width=20, bg="GREEN", fg="white")
@@ -201,6 +222,7 @@ class Input:
         var8.trace("w", callback)
 
         var9 = StringVar(self.root)
+        var9.set("Select option")
         pl9 = OptionMenu(self.root, var9, *self.Resources)
         # var9.trace_add('write', lambda *args: print(var9.get()))
         pl9.config(width=20, bg="GREEN", fg="white")
@@ -209,6 +231,7 @@ class Input:
         var9.trace("w", callback)
 
         var10 = StringVar(self.root)
+        var10.set("Select option")
         pl10 = OptionMenu(self.root, var10, *self.Scope)
         # var10.trace_add('write', lambda *args: print(var10.get()))
         pl10.config(width=20, bg="GREEN", fg="white")
@@ -217,6 +240,7 @@ class Input:
         var10.trace("w", callback)
 
         var11 = StringVar(self.root)
+        var11.set("Select option")
         pl11 = OptionMenu(self.root, var11, *self.Team_Availability)
         # var11.trace_add('write', lambda *args: print(var11.get()))
         pl11.config(width=20, bg="GREEN", fg="white")
@@ -225,6 +249,7 @@ class Input:
         var11.trace("w", callback)
 
         var12 = StringVar(self.root)
+        var12.set("Select option")
         pl12 = OptionMenu(self.root, var12, *self.Team_Distribution)
         # var12.trace_add('write', lambda *args: print(var12.get()))
         pl12.config(width=20, bg="GREEN", fg="white")
@@ -233,6 +258,7 @@ class Input:
         var12.trace("w", callback)
 
         var13 = StringVar(self.root)
+        var13.set("Select option")
         pl13 = OptionMenu(self.root, var13, *self.Team_Size)
         # var13.trace_add('write', lambda *args: print(var13.get()))
         pl13.config(width=20, bg="GREEN", fg="white")
@@ -241,6 +267,7 @@ class Input:
         var13.trace("w", callback)
 
         var14 = StringVar(self.root)
+        var14.set("Select option")
         pl14 = OptionMenu(self.root, var14, *self.Uncertainty)
         # var14.trace_add('write', lambda *args: print(var14.get()))
         pl14.config(width=20, bg="GREEN", fg="white")
@@ -302,7 +329,7 @@ class Input:
         try:
             self.dashboard(validate_var_dict)
         except KeyError:
-            messagebox.showerror('Error', 'Please...')
+            messagebox.showerror('Error', 'Please insert all the 14 attributes')
 
 
     def dashboard(self, validate_var_dict):
@@ -311,7 +338,7 @@ class Input:
         self.root.destroy()
         dashboardTk = Dashboard(filterdDf)
 
-    # TODO: Delete function before submitting: (Debugging only)
+    # TODO: Make this function as a comment before submitting: (Test)
 
     def test(self):
         global var_dict

@@ -1,11 +1,8 @@
 import pandas as pd
 
-#TODO: Add missing TOC row from the framewrok.xlsx
-
-
 def readFromExcel(attribute_dict):
 
-    df = pd.read_excel(r'framework1.xlsx', header=[0, 1])
+    df = pd.read_excel(r'data/framework1.xlsx', header=[0, 1])
 
     filter_df = df.loc[:, [('Approaches', 'All'),
                            ('Budget', attribute_dict['Budget']),
@@ -35,7 +32,7 @@ def readFromExcel(attribute_dict):
 
     filter_df.sort_values('Sum', ascending=False, inplace=True)
 
-    filter_df.to_excel('filtered_df.xlsx')
+    # filter_df.to_excel('filtered_df.xlsx')
 
     return filter_df
 

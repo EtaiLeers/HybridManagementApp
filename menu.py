@@ -4,6 +4,10 @@ import datetime as dt
 import time
 from inputScreen import Input
 
+# from main import MainWindow
+#
+# print(usernameE)
+
 
 def create_img(filename):
     img = Image.open(filename)
@@ -15,12 +19,14 @@ def create_img(filename):
 def message():
     messagebox.showinfo("Hybrid Management - Notification", "We're sorry, this functionality is not supported yet.")
 
-#TODO: Add Username value in the upper left corner
+#TODO: Add Username value in the upper left corner (Feature)
 
 
 class MainMenu:
 
-    def __init__(self):
+    def __init__(self, username):
+
+        print(username)
 
         self.root = Tk()
         self.root.title('Main Menu')
@@ -48,12 +54,12 @@ class MainMenu:
         # clock_label.place(x=1135, y=40)
         # clock_label.after(20, time)
 
-        image2 = create_img('Capture.JPG')
+        image2 = create_img('Images/Capture.JPG')
         img2 = Label(frame, image=image2)
         img2.image = image2
         img2.place(x=15, y=15)
 
-        header = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 30), text='Main Menu:')
+        header = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 30), text=f'Hello {username}' )
         header.place(x=540, y=155)
 
         button1 = Button(self.root, text="Insert New Project", command=self.input)

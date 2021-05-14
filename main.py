@@ -4,17 +4,13 @@ from PIL import Image, ImageTk
 from database import Database
 from menu import MainMenu
 import datetime as dt
-from clockLabel import Clock
-
+# from clockLabel import Clock
 
 db = Database()
 db.createTable()
 
-#TODO: Make the program run as .exe file
-#TODO: Instead of reading from excel file - upload the framework to web and connect with URL?
-#TODO: Write Register function
-#TODO: Add Errors handling
-#TODO: Add Clock
+#TODO: Write Register function (Show stopper)
+#TODO: Add Clock for all screens (Feature)
 
 def create_img(filename):
     img = Image.open(filename)
@@ -33,17 +29,17 @@ class MainWindow:
         frame.configure(background="gray28")
         frame.pack(fill=BOTH, expand=True)
 
-        image1 = create_img('login3.jpg')
+        image1 = create_img('Images/login3.jpg')
         img = Label(frame, image=image1)
         img.image = image1
         img.place(x=450, y=150)
 
-        image2 = create_img('Capture.JPG')
+        image2 = create_img('Images/Capture.JPG')
         img2 = Label(frame, image=image2)
         img2.image = image2
         img2.place(x=15, y=15)
 
-        image3 = create_img('about_test.JPG')
+        image3 = create_img('Images/about_test.JPG')
         img3 = Label(frame, image=image3)
         img3.image = image3
         img3.place(x=10, y=570)
@@ -83,17 +79,18 @@ class MainWindow:
 
         print(self.usernameE)
 
+        #TODO: Switch for testing (Direct to Menu) / Validate with Database (Test)
 
-        # self.login = Button(self.root, text='Login',pady=5, padx=30, command=self.validate)
-        self.login = Button(self.root, text='Login', pady=5, padx=30, command=menu)
+        self.login = Button(self.root, text='Login',pady=5, padx=30, command=self.validate)
+        # self.login = Button(self.root, text='Login', pady=5, padx=30, command=menu)
         self.login.place(x=450, y=400)
 
-        #TODO: Undo hiding to the following line in order to enable users registration:
+        #TODO: Undo hiding to the following line in order to enable users registration (Test)
 
         self.register = Button(self.root, text='Register', pady=5, padx=20, command=self.register)
         self.register.place(x=900, y=640)
 
-        bottom_header = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15), text=('Hybrid Management - where Agile, TOC and waterfall meet together'))
+        bottom_header = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15), text='Hybrid Management - where Agile, TOC and waterfall meet together')
         bottom_header.place(x=200, y=630)
 
         # Clock(self.root)
@@ -108,25 +105,72 @@ class MainWindow:
         try:
             if db.validateData(data, inputData):
                 messagebox.showinfo('Successful', 'Login Was Successful')
-                menu()
+                menu(data)
             else:
                 messagebox.showerror('Error', 'Wrong Credentials')
         except IndexError:
             messagebox.showerror('Error', 'Wrong Credentials')
+        except ValueError:
+            messagebox.showerror('Error', 'You must provide credentials')
+
 
     def register(self):
-        root =Tk()
-        root.title('Register')
-        root.geometry('500x500')
-        root.resizable(False, False)
-        data = ()
-        db.insertData(data)
-        messagebox.showinfo('Successful', 'Username Was Added')
+        r = Register()
 
 
-def menu():
+class Register:
+
+    def __init__(self):
+        self.root =Tk()
+        self.root.title('Register')
+        self.root.geometry('500x380')
+        self.root.resizable(False, False)
+        self.root.configure(background="gray28")
+
+        self.label = Label(self.root, bg="gray28", fg="cyan2", pady=5, font=("Helvetica", 16), text='Hybrid management system - registration window')
+        self.label.place(x=10, y=5)
+
+        self.label_username = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 12), text='User name:')
+        self.label_username.place(x=125, y=120)
+
+        self.label_password = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 12), text='Password:')
+        self.label_password.place(x=125, y=180)
+
+        self.usernameS = StringVar(self.root)
+        self.passwordS = StringVar(self.root)
+
+        self.usernameE = Entry(self.root, relief=FLAT, textvariable=self.usernameS)
+        self.usernameE.place(x=225, y=125)
+
+        self.passwordE = Entry(self.root, relief=FLAT, textvariable=self.passwordS)
+        self.passwordE.place(x=225, y=185)
+
+        self.register = Button(self.root, text='Add Me!', pady=5, padx=30, command=self.add)
+        self.register.place(x=200, y=300)
+
+
+    def add(self):
+        data = self.usernameS.get()
+        try:
+            result = db.searchData(data)
+            print(result)
+
+            if result != 0:
+                data = (self.usernameS.get(), self.passwordS.get())
+                db.insertData(data)
+                messagebox.showinfo('Successful', 'Username Was Added')
+            else:
+                messagebox.showwarning('Warning', 'Username already Exists')
+
+            self.root.destroy()
+
+        except ValueError:
+            messagebox.showerror('Error','Invalid credentials')
+
+
+def menu(username):
     main.root.destroy()
-    menu_screen = MainMenu()
+    menu_screen = MainMenu(username)
 
 main = MainWindow()
 main.run()

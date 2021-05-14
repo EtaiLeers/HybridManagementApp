@@ -1,6 +1,4 @@
 import sqlite3
-import bcrypt
-
 
 class Database:
 
@@ -20,13 +18,20 @@ class Database:
         self.connection.commit()
 
     def insertData(self, data):
-        insert_data = '''INSERT INTO users(username, password)VALUES(?, ?);'''
+        if not data[0] or not data[1]:
+            raise ValueError ('Invalid credentials')
+
+        insert_data = '''INSERT INTO users (username, password)VALUES(?, ?)'''
         self.cursor.execute(insert_data, data)
         self.connection.commit()
 
     def searchData(self, data):
-        search_data = '''SELECT * FROM users WHERE username = (?);'''
-        self.cursor.execute(search_data, data)
+
+        if not data:
+            raise ValueError ('Invalid credentials')
+
+        search_data = '''SELECT * FROM users WHERE username = ? '''
+        self.cursor.execute(search_data, (data, ))
 
         rows = self.cursor.fetchall()
         if rows == []:
@@ -36,6 +41,9 @@ class Database:
     def validateData(self, data, inputData):
         print(data)
         print(inputData)
+
+        if not data or not inputData[1]:
+            raise ValueError('You must provide credentials')
 
         validate_data = '''SELECT * FROM users WHERE username = ? '''
 

@@ -6,7 +6,9 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import datetime as dt
 import time
+import warnings
 
+warnings.filterwarnings("ignore")
 
 def normalize(value, max, min):
     v = (value - min) / (max - min) * (10 - 1) + 1
@@ -61,7 +63,7 @@ methods_dict = {
     "TOC": 0
 }
 
-#TODO: Add Logo
+#TODO: Add Logo (Feature)
 
 
 class Dashboard:
@@ -81,7 +83,7 @@ class Dashboard:
         frame.pack(fill=BOTH, expand=True)
 
         '''
-        image2 = create_img('Capture.JPG')
+        image2 = create_img('Images/Capture.JPG')
         img2 = Label(frame, image=image2)
         img2.image = image2
         img2.place(x=15, y=15)
@@ -139,10 +141,10 @@ class Dashboard:
 
         tree = ttk.Treeview(root, columns=(1, 2), height=rows, show="headings")
         tree.pack(side='left')
-        tree.place(x=700, y=150)
+        tree.place(x=700, y=100)
 
-        #TODO: Change font size in the table
-        #TODO: Change the color of the rows according to the method type
+        #TODO: Change font size in the table (Feature)
+        #TODO: Change the color of the rows according to the method type (Feature)
 
         tree.heading("#0", text="Label", anchor=W)
         tree.heading("#1", text="Approach", anchor=CENTER)
@@ -162,7 +164,7 @@ class Dashboard:
         style.configure("Treeview",
                         background="silver",
                         foreground="black",
-                        rowheight=15,
+                        rowheight=30,
                         fieldbackground="silver")
 
         #Change selected color:
@@ -190,8 +192,8 @@ class Dashboard:
 
         print(methods_dict.values())
 
-        #TODO: Make the pie view look more 3D
-        #TODO: Add below the percentage the methods names
+        #TODO: Make the pie view look more 3D (Feature)
+        #TODO: Add below the percentage the methods names (Feature)
 
         colors = ["lightskyblue", "turquoise", "deepskyblue"]
         ax.pie(methods_dict.values(), radius=1, autopct='%1.1f%%', shadow=True, colors=colors)
@@ -210,7 +212,7 @@ class Dashboard:
         # plt.savefig('test.png')
         # ax.pie(methods_dict.values(), radius=1, autopct='%0.2f%%', shadow=False).savefig('Pie_test.png')
 
-        filterdDf.to_excel('filtered_df2.xlsx')
+        # filterdDf.to_excel('filtered_df2.xlsx')
 
         root.mainloop()
 
