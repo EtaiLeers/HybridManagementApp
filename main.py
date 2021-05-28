@@ -7,14 +7,15 @@ import datetime as dt
 # from clockLabel import Clock
 
 db = Database()
-db.createTable()
+db.createTableOfUsers()
+db.createTableOfInputRecords()
+db.createTableOfOutputRecords()
 
-#TODO: Write Register function (Show stopper)
-#TODO: Add Clock for all screens (Feature)
+#TODO: Add Clock for all screens (Feature-4)
 
 def create_img(filename):
     img = Image.open(filename)
-    img.thumbnail((100, 100))
+    img.thumbnail((120, 120))
     p_img = ImageTk.PhotoImage(img)
     return p_img
 
@@ -42,7 +43,7 @@ class MainWindow:
         image3 = create_img('Images/about_test.JPG')
         img3 = Label(frame, image=image3)
         img3.image = image3
-        img3.place(x=10, y=570)
+        img3.place(x=10, y=550)
 
         w = Label(self.root, text=f"{dt.datetime.now():%a, %b %d %Y}", bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
         w.place(x=820, y=20)
@@ -59,36 +60,38 @@ class MainWindow:
         # display_time(self.root)
 
 
-        self.label = Label(self.root, bg="gray28", fg="cyan2", pady=3, font=("Helvetica", 8), text='Scan to read about us')
-        self.label.place(x=5, y=550)
+        self.label = Label(self.root, bg="gray28", fg="cyan2", pady=3, font=("Helvetica", 10), text='Scan to read about us')
+        self.label.place(x=5, y=520)
 
-        self.label_username = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 12), text='User name:')
-        self.label_username.place(x=400, y=300)
+        self.label_username = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 20), text='User name:')
+        self.label_username.place(x=335, y=295)
 
-        self.label_password = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 12), text='Password:')
-        self.label_password.place(x=400, y=350)
+        self.label_password = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 20), text='Password:')
+        self.label_password.place(x=335, y=345)
 
         self.usernameS = StringVar()
         self.passwordS = StringVar()
 
-        self.passwordE = Entry(self.root, show='*', relief=FLAT, textvariable=self.passwordS)
+        self.passwordE = Entry(self.root, show='*', relief=FLAT, textvariable=self.passwordS, font=("Helvetica", 16))
         self.passwordE.place(x=490, y=355)
 
-        self.usernameE = Entry(self.root, relief=FLAT, textvariable=self.usernameS)
+        self.usernameE = Entry(self.root, relief=FLAT, textvariable=self.usernameS, font=("Helvetica", 16))
         self.usernameE.place(x=490, y=305)
 
         print(self.usernameE)
 
         #TODO: Switch for testing (Direct to Menu) / Validate with Database (Test)
 
-        self.login = Button(self.root, text='Login',pady=5, padx=30, command=self.validate)
-        # self.login = Button(self.root, text='Login', pady=5, padx=30, command=menu)
-        self.login.place(x=450, y=400)
+        # data = self.usernameS.get()
+        # self.login = Button(self.root, text='Login', pady=5, padx=30, command=menu(data))
+
+        self.login = Button(self.root, text='Login',pady=5, padx=30, font=("Helvetica", 15), command=self.validate)
+        self.login.place(x=380, y=410)
 
         #TODO: Undo hiding to the following line in order to enable users registration (Test)
 
-        self.register = Button(self.root, text='Register', pady=5, padx=20, command=self.register)
-        self.register.place(x=900, y=640)
+        self.register = Button(self.root, text='Register', pady=5, padx=20, font=("Helvetica", 15), command=self.register)
+        self.register.place(x=525, y=410)
 
         bottom_header = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15), text='Hybrid Management - where Agile, TOC and waterfall meet together')
         bottom_header.place(x=200, y=630)
@@ -157,7 +160,7 @@ class Register:
 
             if result != 0:
                 data = (self.usernameS.get(), self.passwordS.get())
-                db.insertData(data)
+                db.insertUser(data)
                 messagebox.showinfo('Successful', 'Username Was Added')
             else:
                 messagebox.showwarning('Warning', 'Username already Exists')

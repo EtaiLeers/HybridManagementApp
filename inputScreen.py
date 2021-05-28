@@ -8,6 +8,9 @@ import dashboard
 import time
 from readExcel import readFromExcel
 import tkinter.ttk as ttk
+from database import Database
+
+db = Database()
 
 # global Budget, Commitment, Contract_Type, Customer_Type, Duration, Goals, Pace, Procedures_and_Regulations
 # global Resources, Scope, Team_Availability, Team_Distribution, Team_Size, Uncertainty
@@ -74,23 +77,6 @@ class Input:
         img2.image = image2
         img2.place(x=15, y=15)
 
-        #TODO: Add the percentage text inside the progress bar (Feature)
-
-        # style = ttk.Style(self.root)
-        #
-        # percentage1 = [1,2]
-        #
-        # style.layout('text.Horizontal.TProgressbar',
-        #              [('Horizontal.Progressbar.trough',
-        #                {'children': [('Horizontal.Progressbar.pbar',
-        #                               {'side': 'left', 'sticky': 'ns'})],
-        #                 'sticky': 'nswe'}),
-        #               ('Horizontal.Progressbar.label', {'sticky': ''})])
-        #
-        # style.configure('text.Horizontal.TProgressbar', text='{:g} %'.format(percentage1[1]))
-
-        # style = 'text.Horizontal.TProgressbar'
-
         progress = ttk.Progressbar(self.root, orient=HORIZONTAL, length=600, mode='determinate')
         progress.place(x=350, y=20)
 
@@ -126,7 +112,7 @@ class Input:
         lbl7 = Label(self.root, bg="gray28", pady=1, text='Pace:', fg="cyan2", font=("Helvetica", 20))
         lbl7.place(x=240, y=465)
 
-        lbl8 = Label(self.root, bg="gray28", pady=1, text='Proc. and Regs:', fg="cyan2", font=("Helvetica", 20))
+        lbl8 = Label(self.root, bg="gray28", pady=1, text='Procedures & Regu:', fg="cyan2", font=("Helvetica", 20))
         lbl8.place(x=670, y=225)
 
         lbl9 = Label(self.root, bg="gray28", pady=1, text='Resources:', fg="cyan2", font=("Helvetica", 20))
@@ -302,10 +288,10 @@ class Input:
 
         # TODO: Replace between this lines: (Test)
 
-        button1 = Button(self.root, text="GO Hybrid !", command=self.validatePickLists)
-        # button1 = Button(self.root, text="Test", command=self.test)
+        button1 = Button(self.root, text="GO Hybrid !", font=("Helvetica", 15), command=self.validatePickLists)
+        # button1 = Button(self.root, text="Test",font=("Helvetica", 15),  command=self.test)
         button1.config(width=25, bg="white")
-        button1.place(x=600, y=590)
+        button1.place(x=540, y=570)
 
         # _____________________________________________
 
@@ -328,6 +314,8 @@ class Input:
 
         try:
             self.dashboard(validate_var_dict)
+            print(list(validate_var_dict.values()))
+            db.insertInputRecords(list(validate_var_dict.values()))
         except KeyError:
             messagebox.showerror('Error', 'Please insert all the 14 attributes')
 

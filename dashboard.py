@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -16,7 +16,7 @@ def normalize(value, max, min):
 
 
 def recommend(score):
-    if score in range(6, 9):
+    if score in range(7, 9):
         return 'Recommended'
     elif score in range(9, 11):
         return 'Highly Recommended'
@@ -30,6 +30,8 @@ def create_img(filename):
     p_img = ImageTk.PhotoImage(img)
     return p_img
 
+def message():
+    messagebox.showinfo("Hybrid Management - Notification", "We're sorry, this functionality is not supported yet.")
 
 app_dict = {
     "Waterfall": ['Critical path analysis',
@@ -63,7 +65,7 @@ methods_dict = {
     "TOC": 0
 }
 
-#TODO: Add Logo (Feature)
+#TODO: Add Logo (Feature-7)
 
 
 class Dashboard:
@@ -143,8 +145,7 @@ class Dashboard:
         tree.pack(side='left')
         tree.place(x=700, y=100)
 
-        #TODO: Change font size in the table (Feature)
-        #TODO: Change the color of the rows according to the method type (Feature)
+        #TODO: Change font size in the table (Feature-6)
 
         tree.heading("#0", text="Label", anchor=W)
         tree.heading("#1", text="Approach", anchor=CENTER)
@@ -192,8 +193,7 @@ class Dashboard:
 
         print(methods_dict.values())
 
-        #TODO: Make the pie view look more 3D (Feature)
-        #TODO: Add below the percentage the methods names (Feature)
+        #TODO: Make the pie view look more 3D (Feature-5)
 
         colors = ["lightskyblue", "turquoise", "deepskyblue"]
         ax.pie(methods_dict.values(), radius=1, autopct='%1.1f%%', shadow=True, colors=colors)
@@ -213,6 +213,12 @@ class Dashboard:
         # ax.pie(methods_dict.values(), radius=1, autopct='%0.2f%%', shadow=False).savefig('Pie_test.png')
 
         # filterdDf.to_excel('filtered_df2.xlsx')
+
+        #TODO: try to return back to main menu (Feature-2)
+
+        button1 = Button(root, text="Back to main menu", command=message)
+        button1.config(bg="aquamarine2", pady=10, padx=20, width=10, height=2)
+        button1.place(x=10, y=620)
 
         root.mainloop()
 

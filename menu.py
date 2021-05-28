@@ -4,10 +4,6 @@ import datetime as dt
 import time
 from inputScreen import Input
 
-# from main import MainWindow
-#
-# print(usernameE)
-
 
 def create_img(filename):
     img = Image.open(filename)
@@ -18,9 +14,6 @@ def create_img(filename):
 
 def message():
     messagebox.showinfo("Hybrid Management - Notification", "We're sorry, this functionality is not supported yet.")
-
-#TODO: Add Username value in the upper left corner (Feature)
-
 
 class MainMenu:
 
@@ -61,6 +54,8 @@ class MainMenu:
 
         header = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 30), text=f'Hello {username}' )
         header.place(x=540, y=155)
+
+        #TODO: Increase text font inside the (Feature-3)
 
         button1 = Button(self.root, text="Insert New Project", command=self.input)
         button1.config(bg="aquamarine2", pady=10, padx=20, width=20, height=4)

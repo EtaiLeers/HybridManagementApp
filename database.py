@@ -11,19 +11,43 @@ class Database:
         except:
             print('Failed')
 
-
-    def createTable(self):
+    def createTableOfUsers(self):
         create_table = '''CREATE TABLE IF NOT EXISTS users(username TEXT PRIMARY KEY NOT NULL,password TEXT NOT NULL);'''
         self.cursor.execute(create_table)
         self.connection.commit()
 
-    def insertData(self, data):
+    def createTableOfInputRecords(self):
+        create_table = '''CREATE TABLE IF NOT EXISTS input_records(Budget TEXT , Commitment TEXT, Contract_Type TEXT , Customer_Type TEXT, Duration TEXT , Goals TEXT, Pace TEXT , 
+                        Procedures_and_Regulations TEXT, Resources TEXT , Scope TEXT, Team_Availability TEXT , Team_Distribution TEXT, Team_Size TEXT , Uncertainty TEXT);'''
+        self.cursor.execute(create_table)
+        self.connection.commit()
+
+    def createTableOfOutputRecords(self):
+        create_table = '''CREATE TABLE IF NOT EXISTS output_records(rec_approaches TEXT);'''
+        self.cursor.execute(create_table)
+        self.connection.commit()
+
+
+    def insertUser(self, data):
         if not data[0] or not data[1]:
             raise ValueError ('Invalid credentials')
 
         insert_data = '''INSERT INTO users (username, password)VALUES(?, ?)'''
         self.cursor.execute(insert_data, data)
         self.connection.commit()
+
+    #TODO: Insert date and project ID into the query (Feature-1)
+
+    def insertInputRecords(self, data):
+        self.cursor.execute('INSERT INTO input_records (Budget,Commitment,Contract_Type,Customer_Type,Duration,Goals,Pace,'
+                                                 'Procedures_and_Regulations,Resources,Scope,Team_Availability,'
+                                                 'Team_Distribution,Team_Size,Uncertainty) '
+                            'VALUES (:Budget, :Commitment, :Contract_Type, :Customer_Type, :Duration, '
+                                    ':Goals, :Pace, :Procedures_and_Regulations, :Resources, :Scope, :Team_Availability, '
+                                    ':Team_Distribution, :Team_Size, :Uncertainty);', data)
+        self.connection.commit()
+
+    #TODO: create "insertOutputRecords" function (Feature-1.1)
 
     def searchData(self, data):
 
