@@ -4,11 +4,14 @@ from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
+from database import Database
 import datetime as dt
 import time
 import warnings
 
 warnings.filterwarnings("ignore")
+
+db = Database()
 
 def normalize(value, max, min):
     v = (value - min) / (max - min) * (10 - 1) + 1
@@ -181,6 +184,32 @@ class Dashboard:
             tree.insert(parent='', index='end', values=(filterdDf[('Approaches', 'All')].iloc[i],
                                            filterdDf[('Recommendation Level', '')].iloc[i]))
 
+
+        rec_approaches = filterdDf[('Approaches', 'All')].values.tolist()
+
+        rec_approachesString = str('_'.join(rec_approaches))
+        print(rec_approachesString)
+
+        rec_approaches_waterfall = []
+        rec_approaches_agile = []
+        rec_approaches_toc = []
+
+        for i in range(len(rec_approaches)):
+            if rec_approaches[i] in app_dict['Waterfall']:
+                rec_approaches_waterfall.append(rec_approaches[i])
+            if rec_approaches[i] in app_dict['Agile']:
+                rec_approaches_agile.append(rec_approaches[i])
+            if rec_approaches[i] in app_dict['TOC']:
+                rec_approaches_toc.append(rec_approaches[i])
+
+        rec_approaches_waterfall_string = str(','.join(rec_approaches_waterfall))
+        rec_approaches_agile_string= str(','.join(rec_approaches_agile))
+        rec_approaches_toc_string= str(','.join(rec_approaches_toc))
+
+        # print(rec_approaches_waterfall_string)
+        # print(rec_approaches_agile_string)
+        # print(rec_approaches_toc_string)
+
         methods = []
 
         for app in filterdDf[('Approaches', 'All')]:
@@ -219,6 +248,9 @@ class Dashboard:
         button1 = Button(root, text="Back to main menu", command=message)
         button1.config(bg="aquamarine2", pady=10, padx=20, width=10, height=2)
         button1.place(x=10, y=620)
+
+        # db.insertOutputRecords(str(rec_approachesString))
+        db.insertOutputRecords(str(rec_approaches_waterfall_string), str(rec_approaches_agile_string), str(rec_approaches_toc_string))
 
         root.mainloop()
 

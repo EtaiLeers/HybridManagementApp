@@ -23,7 +23,7 @@ class Database:
         self.connection.commit()
 
     def createTableOfOutputRecords(self):
-        create_table = '''CREATE TABLE IF NOT EXISTS output_records(rec_approaches TEXT);'''
+        create_table = '''CREATE TABLE IF NOT EXISTS output_records(rec_approaches_waterfall TEXT, rec_approaches_agile TEXT, rec_approaches_toc TEXT);'''
         self.cursor.execute(create_table)
         self.connection.commit()
 
@@ -47,7 +47,10 @@ class Database:
                                     ':Team_Distribution, :Team_Size, :Uncertainty);', data)
         self.connection.commit()
 
-    #TODO: create "insertOutputRecords" function (Feature-1.1)
+    def insertOutputRecords(self, waterfallData, agileData, tocData):
+        insert_data = '''INSERT INTO output_records (rec_approaches_waterfall, rec_approaches_agile, rec_approaches_toc) VALUES (?, ?, ?)'''
+        self.cursor.execute(insert_data, (waterfallData, agileData ,tocData,))
+        self.connection.commit()
 
     def searchData(self, data):
 
