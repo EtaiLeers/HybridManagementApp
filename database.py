@@ -12,18 +12,18 @@ class Database:
             print('Failed')
 
     def createTableOfUsers(self):
-        create_table = '''CREATE TABLE IF NOT EXISTS users(username TEXT PRIMARY KEY NOT NULL,password TEXT NOT NULL);'''
+        create_table = '''CREATE TABLE IF NOT EXISTS users(user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL,password TEXT NOT NULL);'''
         self.cursor.execute(create_table)
         self.connection.commit()
 
     def createTableOfInputRecords(self):
-        create_table = '''CREATE TABLE IF NOT EXISTS input_records(Budget TEXT , Commitment TEXT, Contract_Type TEXT , Customer_Type TEXT, Duration TEXT , Goals TEXT, Pace TEXT , 
-                        Procedures_and_Regulations TEXT, Resources TEXT , Scope TEXT, Team_Availability TEXT , Team_Distribution TEXT, Team_Size TEXT , Uncertainty TEXT);'''
+        create_table = '''CREATE TABLE IF NOT EXISTS input_records(project_id INTEGER PRIMARY KEY AUTOINCREMENT, Budget TEXT , Commitment TEXT, Contract_Type TEXT , Customer_Type TEXT, Duration TEXT , Goals TEXT, Pace TEXT , 
+                        Procedures_and_Regulations TEXT, Resources TEXT , Scope TEXT, Team_Availability TEXT , Team_Distribution TEXT, Team_Size TEXT , Uncertainty TEXT, timestamp TEXT);'''
         self.cursor.execute(create_table)
         self.connection.commit()
 
     def createTableOfOutputRecords(self):
-        create_table = '''CREATE TABLE IF NOT EXISTS output_records(rec_approaches_waterfall TEXT, rec_approaches_agile TEXT, rec_approaches_toc TEXT);'''
+        create_table = '''CREATE TABLE IF NOT EXISTS output_records(project_id INTEGER PRIMARY KEY AUTOINCREMENT ,rec_approaches_waterfall TEXT, rec_approaches_agile TEXT, rec_approaches_toc TEXT, timestamp TEXT);'''
         self.cursor.execute(create_table)
         self.connection.commit()
 
@@ -41,15 +41,15 @@ class Database:
     def insertInputRecords(self, data):
         self.cursor.execute('INSERT INTO input_records (Budget,Commitment,Contract_Type,Customer_Type,Duration,Goals,Pace,'
                                                  'Procedures_and_Regulations,Resources,Scope,Team_Availability,'
-                                                 'Team_Distribution,Team_Size,Uncertainty) '
+                                                 'Team_Distribution,Team_Size,Uncertainty, timestamp) '
                             'VALUES (:Budget, :Commitment, :Contract_Type, :Customer_Type, :Duration, '
                                     ':Goals, :Pace, :Procedures_and_Regulations, :Resources, :Scope, :Team_Availability, '
-                                    ':Team_Distribution, :Team_Size, :Uncertainty);', data)
+                                    ':Team_Distribution, :Team_Size, :Uncertainty, :timestamp);', data)
         self.connection.commit()
 
-    def insertOutputRecords(self, waterfallData, agileData, tocData):
-        insert_data = '''INSERT INTO output_records (rec_approaches_waterfall, rec_approaches_agile, rec_approaches_toc) VALUES (?, ?, ?)'''
-        self.cursor.execute(insert_data, (waterfallData, agileData ,tocData,))
+    def insertOutputRecords(self, waterfallData, agileData, tocData, timestamp):
+        insert_data = '''INSERT INTO output_records (rec_approaches_waterfall, rec_approaches_agile, rec_approaches_toc, timestamp) VALUES (?, ?, ?, ?)'''
+        self.cursor.execute(insert_data, (waterfallData, agileData ,tocData, timestamp,))
         self.connection.commit()
 
     def searchData(self, data):
@@ -78,8 +78,8 @@ class Database:
         # self.cursor.execute(validate_data, ('Etai',))
         row = self.cursor.fetchall()
 
-        if row[0][0] == inputData[0]:
-            return row[0][1] == str(inputData[1])
+        if row[0][1] == inputData[0]:
+            return row[0][2] == str(inputData[1])
 
 
 def run():

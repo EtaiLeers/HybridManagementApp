@@ -6,7 +6,7 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from database import Database
 import datetime as dt
-import time
+from datetime import datetime
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -68,9 +68,6 @@ methods_dict = {
     "TOC": 0
 }
 
-#TODO: Add Logo (Feature-7)
-
-
 class Dashboard:
 
     def __init__(self, filterdDf):
@@ -87,13 +84,6 @@ class Dashboard:
         frame.configure(background="gray28")
         frame.pack(fill=BOTH, expand=True)
 
-        '''
-        image2 = create_img('Images/Capture.JPG')
-        img2 = Label(frame, image=image2)
-        img2.image = image2
-        img2.place(x=15, y=15)
-        '''
-
         header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 26, 'underline'),
                        text='Hybrid management - system recommendations:')
         header.place(x=30, y=20)
@@ -101,20 +91,6 @@ class Dashboard:
         w = Label(root, text=f"{dt.datetime.now():%a, %b %d %Y}",
                   bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
         w.place(x=1100, y=15)
-
-        now = time.strftime("%H:%M:%S")
-        clock_label = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
-
-        # def display_time():
-        #     now = time.strftime("%H:%M:%S")
-        #     clock_label.configure(text=now)
-        #     root.after(20, display_time)
-        #
-        # display_time()
-        #
-        # clock_label.configure(text=now)
-        # clock_label.place(x=1135, y=40)
-        # clock_label.after(20, time)
 
         bottom_header = Label(root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15),
                               text='Hybrid Management - where Agile, TOC and waterfall meet together')
@@ -127,7 +103,7 @@ class Dashboard:
 
         fig = Figure()  # create a figure object
         fig.set_facecolor('#474747')  # The color of the background
-        ax = fig.add_subplot(111)  # add an Axes to the figure
+        ax = fig.add_subplot(111)  # add an Axis to the figure
 
         chart1 = FigureCanvasTkAgg(fig, frameChartsLT)
         chart1.get_tk_widget().pack()
@@ -140,15 +116,13 @@ class Dashboard:
         filterdDf[('Recommendation Level', '')] = filterdDf[('Normalized sum', '')].apply(recommend)
 
         condition = filterdDf[('Recommendation Level', '')] != 'Not related'
-        filterdDf = filterdDf[condition]
+        filterdDf = filterdDf[condition] #Deletes all the rows with the value: "Not related"
 
         rows = len(filterdDf)
 
         tree = ttk.Treeview(root, columns=(1, 2), height=rows, show="headings")
         tree.pack(side='left')
         tree.place(x=700, y=100)
-
-        #TODO: Change font size in the table (Feature-6)
 
         tree.heading("#0", text="Label", anchor=W)
         tree.heading("#1", text="Approach", anchor=CENTER)
@@ -194,6 +168,8 @@ class Dashboard:
         rec_approaches_agile = []
         rec_approaches_toc = []
 
+        #Adding each methodology to its main approach in order to insert it to the DB
+
         for i in range(len(rec_approaches)):
             if rec_approaches[i] in app_dict['Waterfall']:
                 rec_approaches_waterfall.append(rec_approaches[i])
@@ -222,15 +198,11 @@ class Dashboard:
 
         print(methods_dict.values())
 
-        #TODO: Make the pie view look more 3D (Feature-5)
-
         colors = ["lightskyblue", "turquoise", "deepskyblue"]
         ax.pie(methods_dict.values(), radius=1, autopct='%1.1f%%', shadow=True, colors=colors)
 
-        # methods_dict['TOC'] = 8
         labels = sorted(methods_dict.keys(),key=lambda x: methods_dict[x],reverse=True)
 
-        # labels = ['Waterfall', 'Agile', 'TOC']
         patches, texts = plt.pie(methods_dict.values(), colors=colors, shadow=True, startangle=90)
         ax.legend(patches, labels, loc="best")
 
@@ -238,21 +210,18 @@ class Dashboard:
 
         # Saving charts for testing
 
-        # plt.savefig('test.png')
+        # plt.savefig('pie_result_test.png')
         # ax.pie(methods_dict.values(), radius=1, autopct='%0.2f%%', shadow=False).savefig('Pie_test.png')
 
         # filterdDf.to_excel('filtered_df2.xlsx')
-
-        #TODO: try to return back to main menu (Feature-2)
 
         button1 = Button(root, text="Back to main menu", command=message)
         button1.config(bg="aquamarine2", pady=10, padx=20, width=10, height=2)
         button1.place(x=10, y=620)
 
-        # db.insertOutputRecords(str(rec_approachesString))
-        db.insertOutputRecords(str(rec_approaches_waterfall_string), str(rec_approaches_agile_string), str(rec_approaches_toc_string))
+        dateTimeObj = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        # Adding recommended approaches to the DB for analysis
+        db.insertOutputRecords(str(rec_approaches_waterfall_string), str(rec_approaches_agile_string), str(rec_approaches_toc_string), str(dateTimeObj))
 
         root.mainloop()
-
-# df = pd.read_excel('filtered_df.xlsx', header=[0,1])
-# dash = Dashboard(df)

@@ -5,19 +5,15 @@ from PIL import Image, ImageTk
 import datetime as dt
 from dashboard import Dashboard
 import dashboard
-import time
+from datetime import datetime
 from readExcel import readFromExcel
 import tkinter.ttk as ttk
 from database import Database
 
 db = Database()
 
-# global Budget, Commitment, Contract_Type, Customer_Type, Duration, Goals, Pace, Procedures_and_Regulations
-# global Resources, Scope, Team_Availability, Team_Distribution, Team_Size, Uncertainty
-
 # I created a dictionary outside of everything
 var_dict = dict()
-
 
 def create_image(filename):
     img = Image.open(filename)
@@ -25,11 +21,9 @@ def create_image(filename):
     p_img = ImageTk.PhotoImage(img)
     return p_img
 
-
 def close_window():
     import sys
     sys.exit()
-
 
 class Input:
     Budget = {'Flexible', 'Variable', 'Fixed'}
@@ -57,20 +51,6 @@ class Input:
         frame = Frame(self.root, width=1000, height=680)
         frame.configure(background="gray28")
         frame.pack(fill=BOTH, expand=True)
-
-        # now = time.strftime("%H:%M:%S")
-        # clock_label = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
-        #
-        # def display_time():
-        #     now = time.strftime("%H:%M:%S")
-        #     clock_label.configure(text=now)
-        #     self.root.after(20, display_time)
-        #
-        # display_time()
-        #
-        # clock_label.configure(text=now)
-        # clock_label.place(x=1135, y=40)
-        # clock_label.after(20, time)
 
         image2 = create_image('Images/Capture.JPG')
         img2 = Label(image=image2)
@@ -138,16 +118,15 @@ class Input:
         var1 = StringVar(self.root)
         var1.set("Select option")
         pl1 = OptionMenu(self.root, var1, *self.Budget)
-        # var1.trace_add('write', lambda *args: print(var1.get()))
         pl1.config(width=20, bg="GREEN", fg="white")
         pl1.place(x=470, y=230)
 
+        #Callback is the function that adds percentage to the PB
         var1.trace("w", callback)
 
         var2 = StringVar(self.root)
         var2.set("Select option")
         pl2 = OptionMenu(self.root, var2, *self.Commitment)
-        # var2.trace_add('write', lambda *args: print(var2.get()))
         pl2.config(width=20, bg="GREEN", fg="white")
         pl2.place(x=470, y=270)
 
@@ -156,7 +135,6 @@ class Input:
         var3 = StringVar(self.root)
         var3.set("Select option")
         pl3 = OptionMenu(self.root, var3, *self.Contract_Type)
-        # var3.trace_add('write', lambda *args: print(var3.get()))
         pl3.config(width=20, bg="GREEN", fg="white")
         pl3.place(x=470, y=310)
 
@@ -165,7 +143,6 @@ class Input:
         var4 = StringVar(self.root)
         var4.set("Select option")
         pl4 = OptionMenu(self.root, var4, *self.Customer_Type)
-        # var4.trace_add('write', lambda *args: print(var4.get()))
         pl4.config(width=20, bg="GREEN", fg="white")
         pl4.place(x=470, y=350)
 
@@ -174,7 +151,6 @@ class Input:
         var5 = StringVar(self.root)
         var5.set("Select option")
         pl5 = OptionMenu(self.root, var5, *self.Duration)
-        # var5.trace_add('write', lambda *args: print(var5.get()))
         pl5.config(width=20, bg="GREEN", fg="white")
         pl5.place(x=470, y=390)
 
@@ -183,7 +159,6 @@ class Input:
         var6 = StringVar(self.root)
         var6.set("Select option")
         pl6 = OptionMenu(self.root, var6, *self.Goals)
-        # var6.trace_add('write', lambda *args: print(var6.get()))
         pl6.config(width=20, bg="GREEN", fg="white")
         pl6.place(x=470, y=430)
 
@@ -192,7 +167,6 @@ class Input:
         var7 = StringVar(self.root)
         var7.set("Select option")
         pl7 = OptionMenu(self.root, var7, *self.Pace)
-        # var7.trace_add('write', lambda *args: print(var7.get()))
         pl7.config(width=20, bg="GREEN", fg="white")
         pl7.place(x=470, y=470)
 
@@ -201,7 +175,6 @@ class Input:
         var8 = StringVar(self.root)
         var8.set("Select option")
         pl8 = OptionMenu(self.root, var8, *self.Procedures_and_Regulations)
-        # var8.trace_add('write', lambda *args: print(var8.get()))
         pl8.config(width=20, bg="GREEN", fg="white")
         pl8.place(x=960, y=230)
 
@@ -210,7 +183,6 @@ class Input:
         var9 = StringVar(self.root)
         var9.set("Select option")
         pl9 = OptionMenu(self.root, var9, *self.Resources)
-        # var9.trace_add('write', lambda *args: print(var9.get()))
         pl9.config(width=20, bg="GREEN", fg="white")
         pl9.place(x=960, y=270)
 
@@ -219,7 +191,6 @@ class Input:
         var10 = StringVar(self.root)
         var10.set("Select option")
         pl10 = OptionMenu(self.root, var10, *self.Scope)
-        # var10.trace_add('write', lambda *args: print(var10.get()))
         pl10.config(width=20, bg="GREEN", fg="white")
         pl10.place(x=960, y=310)
 
@@ -228,7 +199,6 @@ class Input:
         var11 = StringVar(self.root)
         var11.set("Select option")
         pl11 = OptionMenu(self.root, var11, *self.Team_Availability)
-        # var11.trace_add('write', lambda *args: print(var11.get()))
         pl11.config(width=20, bg="GREEN", fg="white")
         pl11.place(x=960, y=350)
 
@@ -237,7 +207,6 @@ class Input:
         var12 = StringVar(self.root)
         var12.set("Select option")
         pl12 = OptionMenu(self.root, var12, *self.Team_Distribution)
-        # var12.trace_add('write', lambda *args: print(var12.get()))
         pl12.config(width=20, bg="GREEN", fg="white")
         pl12.place(x=960, y=390)
 
@@ -246,7 +215,6 @@ class Input:
         var13 = StringVar(self.root)
         var13.set("Select option")
         pl13 = OptionMenu(self.root, var13, *self.Team_Size)
-        # var13.trace_add('write', lambda *args: print(var13.get()))
         pl13.config(width=20, bg="GREEN", fg="white")
         pl13.place(x=960, y=430)
 
@@ -255,7 +223,6 @@ class Input:
         var14 = StringVar(self.root)
         var14.set("Select option")
         pl14 = OptionMenu(self.root, var14, *self.Uncertainty)
-        # var14.trace_add('write', lambda *args: print(var14.get()))
         pl14.config(width=20, bg="GREEN", fg="white")
         pl14.place(x=960, y=470)
 
@@ -290,6 +257,7 @@ class Input:
 
         button1 = Button(self.root, text="GO Hybrid !", font=("Helvetica", 15), command=self.validatePickLists)
         # button1 = Button(self.root, text="Test",font=("Helvetica", 15),  command=self.test)
+
         button1.config(width=25, bg="white")
         button1.place(x=540, y=570)
 
@@ -315,7 +283,10 @@ class Input:
         try:
             self.dashboard(validate_var_dict)
             print(list(validate_var_dict.values()))
-            db.insertInputRecords(list(validate_var_dict.values()))
+            dateTimeObj = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            validate_var_list = list(validate_var_dict.values())
+            validate_var_list.append(str(dateTimeObj))
+            db.insertInputRecords(validate_var_list)
         except KeyError:
             messagebox.showerror('Error', 'Please insert all the 14 attributes')
 
@@ -326,7 +297,7 @@ class Input:
         self.root.destroy()
         dashboardTk = Dashboard(filterdDf)
 
-    # TODO: Make this function as a comment before submitting: (Test)
+    # TODO: This func is made to quickly debug the system (Test)
 
     def test(self):
         global var_dict

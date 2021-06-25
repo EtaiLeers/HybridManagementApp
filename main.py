@@ -4,14 +4,11 @@ from PIL import Image, ImageTk
 from database import Database
 from menu import MainMenu
 import datetime as dt
-# from clockLabel import Clock
 
 db = Database()
 db.createTableOfUsers()
 db.createTableOfInputRecords()
 db.createTableOfOutputRecords()
-
-#TODO: Add Clock for all screens (Feature-4)
 
 def create_img(filename):
     img = Image.open(filename)
@@ -47,18 +44,6 @@ class MainWindow:
 
         w = Label(self.root, text=f"{dt.datetime.now():%a, %b %d %Y}", bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
         w.place(x=820, y=20)
-
-
-        # self.now = time.strftime("%H:%M:%S")
-        # clock_label = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
-        #
-        # def display_time(root):
-        #     now = time.strftime("%H:%M:%S")
-        #     clock_label.configure(text=now)
-        #     root.after(20, display_time)
-        #
-        # display_time(self.root)
-
 
         self.label = Label(self.root, bg="gray28", fg="cyan2", pady=3, font=("Helvetica", 10), text='Scan to read about us')
         self.label.place(x=5, y=520)

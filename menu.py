@@ -33,20 +33,6 @@ class MainMenu:
         w = Label(self.root, text=f"{dt.datetime.now():%a, %b %d %Y}", bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
         w.place(x=1100, y=15)
 
-        # now = time.strftime("%H:%M:%S")
-        # clock_label = Label(self.root, bg="gray28", fg="white", pady=3, font=("Helvetica", 15))
-        #
-        # def display_time(root):
-        #     now = time.strftime("%H:%M:%S")
-        #     clock_label.configure(text=now)
-        #     root.after(20, display_time)
-        #
-        # display_time(self.root)
-        #
-        # clock_label.configure(text=now)
-        # clock_label.place(x=1135, y=40)
-        # clock_label.after(20, time)
-
         image2 = create_img('Images/Capture.JPG')
         img2 = Label(frame, image=image2)
         img2.image = image2
