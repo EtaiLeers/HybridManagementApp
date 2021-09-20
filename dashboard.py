@@ -19,7 +19,7 @@ def normalize(value, max, min):
 
 
 def recommend(score):
-    if score in range(7, 9):
+    if score in range(8, 9):
         return 'Recommended'
     elif score in range(9, 11):
         return 'Highly Recommended'
